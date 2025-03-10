@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "891488851084",
+    "project_id": "careerlinkapp-32e52",
+    "storage_bucket": "careerlinkapp-32e52.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891488851084:android:06dec3a796cfb63d4397a9",
+        "android_client_info": {
+          "package_name": "com.ahmedkhalifa.careerlinkapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMQE-skJ3asW-7JFCuwnAfu-EXhwhOEdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

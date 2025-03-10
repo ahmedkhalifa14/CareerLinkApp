@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">CareerLinkApp</string>
+    <string name="onboarding_image_desc">CareerLinkApp</string>
+    <string name="onboarding_title">Find a Perfect \n Job Match</string>
+    <string name="onboarding_subtitle">Finding your dream job is more easier \n and faster with CareerLink</string>
+    <string name="get_started">Let\'s Get Started</string>
+    <string name="login_welcome_back">Welcome Back!</string>
+    <string name="login_subtitle">Fill your details or continue \nwith social media.</string>
+    <string name="or_continue_with">-- Or continue with --</string>
+    <string name="forget_password">Forget Password?</string>
+    <string name="new_user">New User?</string>
+    <string name="create_account">Create Account</string>
+    <string name="already_have_account">Already Have Account?</string>
+    <string name="login">Log in</string>
+    <string name="register_account">Register Account</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="sign_up_c">SIGN UP</string>
+    <string name="user_name">User Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="log_in_c">LOG IN</string>
+    //Validation
+    <string name="password_empty">Please, enter your password</string>
+    <string name="min_password">Password should include 1Capital letter, 1 Number, and min 8 character, special character are not allowed</string>
+    <string name="password_no_spec_characters">Special characters are not allowed</string>
+    <string name="one_num_needed">One Number Needed at Least</string>
+    <string name="cap_letter">One Capital letter Needed At Least</string>
+    <string name="phone_number">Phone Number</string>
+
+</resources>
