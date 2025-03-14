@@ -100,6 +100,11 @@ dependencies {
     implementation ("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
         //Hilt
     //Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.51.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    implementation("com.google.dagger:hilt-android:2.55")
+    kapt("com.google.dagger:hilt-android-compiler:2.55")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+        implementation ("androidx.compose.material:material-icons-extended:1.7.8" )
+
+
 }

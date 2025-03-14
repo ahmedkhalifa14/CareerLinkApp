@@ -6,12 +6,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.ahmedkhalifa.careerlinkapp.ScreenContent
 import com.ahmedkhalifa.careerlinkapp.screens.login.LoginScreen
+import com.ahmedkhalifa.careerlinkapp.screens.register.RegisterScreen
 
 
 fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
     navigation(
         route = Graph.AUTHENTICATION,
-        startDestination = AuthScreen.Login.route
+        startDestination = AuthScreen.SignUp.route
     ) {
         composable(route = AuthScreen.Login.route) {
 //            LoginContent(
@@ -29,7 +30,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
             LoginScreen(navController = navController)
         }
         composable(route = AuthScreen.SignUp.route) {
-            ScreenContent(name = AuthScreen.SignUp.route) {}
+            RegisterScreen()
         }
         composable(route = AuthScreen.Forgot.route) {
             ScreenContent(name = AuthScreen.Forgot.route) {}

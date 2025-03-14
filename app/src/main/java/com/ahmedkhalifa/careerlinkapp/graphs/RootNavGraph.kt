@@ -12,7 +12,7 @@ fun RootNavigationGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         route = Graph.ROOT,
-        startDestination = Graph.HOME
+        startDestination = Graph.AUTHENTICATION
     ) {
         composable(route=Graph.SPLASH){
             SplashScreen(navController = navController)

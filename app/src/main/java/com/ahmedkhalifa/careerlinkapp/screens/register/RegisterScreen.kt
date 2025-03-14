@@ -1,5 +1,6 @@
 package com.ahmedkhalifa.careerlinkapp.screens.register
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,13 +10,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,31 +30,69 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.wear.compose.material.MaterialTheme
 import com.ahmedkhalifa.careerlinkapp.R
 import com.ahmedkhalifa.careerlinkapp.composable.CustomBtn
 import com.ahmedkhalifa.careerlinkapp.composable.CustomImageButton
 import com.ahmedkhalifa.careerlinkapp.composable.CustomTextField
+import com.ahmedkhalifa.careerlinkapp.composable.PasswordTextField
 import com.ahmedkhalifa.careerlinkapp.ui.theme.FacebookIconColor
 import com.ahmedkhalifa.careerlinkapp.ui.theme.GoogleIconColor
-import com.ahmedkhalifa.careerlinkapp.viewmodel.MainViewModel
-
+import com.ahmedkhalifa.careerlinkapp.utils.Event
+import com.ahmedkhalifa.careerlinkapp.utils.Resource
+import com.ahmedkhalifa.careerlinkapp.viewmodel.AuthViewModel
 
 
 @Composable
 fun RegisterScreen(
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: AuthViewModel = hiltViewModel()
 ) {
-    RegisterScreenContent()
+    val state = viewModel.registerState.collectAsState()
+    val context = LocalContext.current
+
+
+    LaunchedEffect(state.value) {
+        state.value.getContentIfNotHandled()?.let { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    Toast.makeText(
+                        context,
+                        "Successful Registration,Please Verify your email address!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                }
+
+                is Resource.Error -> {
+                    Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
+                }
+
+                else -> {}
+            }
+        }
+    }
+
+    RegisterScreenContent(
+        onRegisterClick = { email, password ->
+            viewModel.register(email, password)
+        },
+        registerState = state.value
+    )
 }
 
 @Composable
-fun RegisterScreenContent() {
+fun RegisterScreenContent(
+    onRegisterClick: (String, String) -> Unit,
+    registerState: Event<Resource<Unit>>
+) {
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
     Column(
         Modifier
             .fillMaxSize()
             .padding(top = 48.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
-
     ) {
         Text(
             text = stringResource(R.string.register_account),
@@ -67,29 +112,29 @@ fun RegisterScreenContent() {
             modifier = Modifier.padding(bottom = 16.dp)
         )
         CustomTextField(
-            value = "",
-            onValueChange = {},
-            hint = stringResource(R.string.user_name),
-            icon = Icons.Default.Person
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        CustomTextField(
-            value = "",
-            onValueChange = {
-
-            },
+            value = email,
+            onValueChange = { email = it },
             hint = stringResource(R.string.email_address),
             icon = Icons.Default.Email
         )
         Spacer(modifier = Modifier.height(16.dp))
-        CustomTextField(
-            value = "",
-            onValueChange = {},
-            hint = stringResource(R.string.password),
-            icon = Icons.Default.Lock
+        PasswordTextField(
+            value = password,
+            onValueChange = { password = it },
+            label = "Password",
+            placeholder = "Enter your password",
+            isError = password.isNotEmpty() && password.length < 8,
+            supportingText = {
+                if (password.isNotEmpty() && password.length < 8) {
+                    Text(
+                        text = "Password must be at least 8 characters long", color = Color.Red
+                    )
+                }
+            }
         )
         Spacer(modifier = Modifier.height(16.dp))
         CustomBtn(text = stringResource(R.string.sign_up_c), icon = null) {
+            onRegisterClick(email, password)
         }
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -113,7 +158,6 @@ fun RegisterScreenContent() {
             Spacer(modifier = Modifier.width(16.dp))
 
             CustomImageButton(
-
                 image = painterResource(id = R.drawable.facebook),
                 backgroundColor = FacebookIconColor,
                 onClick = { /* Handle click */ }
@@ -143,14 +187,30 @@ fun RegisterScreenContent() {
             )
         }
 
+
+        when (val resource = registerState.peekContent()) {
+            is Resource.Loading -> {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+            }
+
+            is Resource.Error -> {
+                Text(
+                    text = resource.message ?: "An error occurred",
+                    color = Color.Red,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+            }
+
+            else -> {}
+        }
     }
 }
-
 
 @Composable
 @Preview(showSystemUi = true, showBackground = true)
 fun PreviewRegisterScreen() {
-    RegisterScreenContent()
+    RegisterScreenContent(
+        onRegisterClick = { _, _ -> },
+        registerState = Event(Resource.Init())
+    )
 }
-
-
