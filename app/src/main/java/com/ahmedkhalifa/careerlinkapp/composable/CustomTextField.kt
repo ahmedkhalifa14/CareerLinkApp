@@ -7,7 +7,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,7 +18,8 @@ import androidx.compose.ui.unit.dp
 fun CustomTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    hint: String,
+    label: String,
+    placeholder: String
     icon: ImageVector,
     modifier: Modifier = Modifier
 ) {
@@ -29,9 +29,8 @@ fun CustomTextField(
         modifier = modifier
             .fillMaxWidth()
             .background(Color.White, shape = RoundedCornerShape(8.dp)),
-        placeholder = {
-            Text(text = hint, color = Color.Gray)
-        },
+        label = { Text(text = label) },
+        placeholder = { Text(text = placeholder) },
         leadingIcon = {
             Icon(imageVector = icon, contentDescription = "Input Icon", tint = Color.Gray)
         },

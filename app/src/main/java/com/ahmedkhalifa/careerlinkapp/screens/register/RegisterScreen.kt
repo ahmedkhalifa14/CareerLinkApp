@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -114,7 +115,8 @@ fun RegisterScreenContent(
         CustomTextField(
             value = email,
             onValueChange = { email = it },
-            hint = stringResource(R.string.email_address),
+            label = stringResource(R.string.email_address),
+            placeholder = "Enter your email address",
             icon = Icons.Default.Email
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -123,6 +125,7 @@ fun RegisterScreenContent(
             onValueChange = { password = it },
             label = "Password",
             placeholder = "Enter your password",
+            icon = Icons.Default.Lock,
             isError = password.isNotEmpty() && password.length < 8,
             supportingText = {
                 if (password.isNotEmpty() && password.length < 8) {

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -121,7 +122,8 @@ fun LoginScreenContent(
         CustomTextField(
             value = email,
             onValueChange = { email = it },
-            hint = stringResource(R.string.email_address),
+            label = stringResource(R.string.email_address),
+            placeholder = stringResource(R.string.enter_your_email_address),
             icon = Icons.Default.Email
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -129,17 +131,17 @@ fun LoginScreenContent(
             value = password,
             onValueChange = { password = it },
             label = "Password",
-            placeholder = "Enter your password",
+            placeholder = stringResource(R.string.enter_your_password),
+            icon = Icons.Default.Lock,
             isError = password.isNotEmpty() && password.length < 8,
             supportingText = {
                 if (password.isNotEmpty() && password.length < 8) {
                     Text(
-                        text = "Password must be at least 8 characters long", color = Color.Red
+                        text = stringResource(R.string.password_must_be_at_least_8_characters_long), color = Color.Red
                     )
                 }
             }
         )
-
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = stringResource(R.string.forget_password),

@@ -26,5 +26,8 @@
     <string name="one_num_needed">One Number Needed at Least</string>
     <string name="cap_letter">One Capital letter Needed At Least</string>
     <string name="phone_number">Phone Number</string>
+    <string name="enter_your_email_address">Enter your email address</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="password_must_be_at_least_8_characters_long">Password must be at least 8 characters long</string>
 
 </resources>
