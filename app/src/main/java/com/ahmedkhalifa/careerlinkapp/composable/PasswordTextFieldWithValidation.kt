@@ -27,7 +27,7 @@ fun PasswordTextField(
     onValueChange: (String) -> Unit,
     label: String,
     placeholder: String,
-    icon:ImageVector
+    icon:ImageVector,
     modifier: Modifier = Modifier,
     isError: Boolean = false,
     supportingText: @Composable (() -> Unit)? = null

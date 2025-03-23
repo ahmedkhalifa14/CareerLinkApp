@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,12 +35,12 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import androidx.wear.compose.material.MaterialTheme
 import com.ahmedkhalifa.careerlinkapp.R
 import com.ahmedkhalifa.careerlinkapp.composable.CustomBtn
 import com.ahmedkhalifa.careerlinkapp.composable.CustomImageButton
 import com.ahmedkhalifa.careerlinkapp.composable.CustomTextField
 import com.ahmedkhalifa.careerlinkapp.composable.PasswordTextField
+import com.ahmedkhalifa.careerlinkapp.graphs.Graph
 import com.ahmedkhalifa.careerlinkapp.ui.theme.FacebookIconColor
 import com.ahmedkhalifa.careerlinkapp.ui.theme.GoogleIconColor
 import com.ahmedkhalifa.careerlinkapp.utils.Event
@@ -56,7 +58,7 @@ fun LoginScreen(
         loginState.value.getContentIfNotHandled()?.let { resource ->
             when (resource) {
                 is Resource.Success -> {
-
+                    navController.navigate(Graph.HOME)
                     Toast.makeText(
                         context,
                         "Login successful",
@@ -113,7 +115,7 @@ fun LoginScreenContent(
 
         Text(
             text = stringResource(R.string.login_subtitle),
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.bodyMedium,
             fontSize = 20.sp,
             color = Color.Gray,
             lineHeight = 18.sp,
@@ -137,7 +139,8 @@ fun LoginScreenContent(
             supportingText = {
                 if (password.isNotEmpty() && password.length < 8) {
                     Text(
-                        text = stringResource(R.string.password_must_be_at_least_8_characters_long), color = Color.Red
+                        text = stringResource(R.string.password_must_be_at_least_8_characters_long),
+                        color = Color.Red
                     )
                 }
             }
@@ -145,7 +148,7 @@ fun LoginScreenContent(
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = stringResource(R.string.forget_password),
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.bodyMedium,
             fontSize = 18.sp,
             color = Color.Gray,
             lineHeight = 18.sp,
@@ -155,12 +158,13 @@ fun LoginScreenContent(
         )
         Spacer(modifier = Modifier.height(16.dp))
         CustomBtn(text = stringResource(R.string.log_in_c), icon = null) {
+            onClickLogin(email, password)
         }
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
             text = stringResource(R.string.or_continue_with),
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.bodyMedium,
             fontSize = 18.sp,
             color = Color.Gray,
             lineHeight = 18.sp,
@@ -189,7 +193,7 @@ fun LoginScreenContent(
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Text(
                 text = stringResource(R.string.new_user),
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.bodyMedium,
                 fontSize = 18.sp,
                 color = Color.Gray,
                 lineHeight = 18.sp,
@@ -199,7 +203,7 @@ fun LoginScreenContent(
             )
             Text(
                 text = stringResource(R.string.create_account),
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.bodyMedium,
                 fontSize = 18.sp,
                 color = Color.Black,
                 lineHeight = 18.sp,
@@ -207,7 +211,21 @@ fun LoginScreenContent(
                     .padding(bottom = 16.dp)
             )
         }
+        when (val resource = loginState.peekContent()) {
+            is Resource.Loading -> {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+            }
 
+            is Resource.Error -> {
+                Text(
+                    text = resource.message ?: "An error occurred",
+                    color = Color.Red,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+            }
+
+            else -> {}
+        }
     }
 }
 

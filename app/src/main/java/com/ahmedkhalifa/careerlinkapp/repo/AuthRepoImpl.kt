@@ -5,9 +5,9 @@ import com.ahmedkhalifa.careerlinkapp.models.User
 import com.ahmedkhalifa.careerlinkapp.utils.LoginResult
 import javax.inject.Inject
 
-class MainRepoImpl @Inject constructor(
+class AuthRepoImpl @Inject constructor(
     private val firebaseService: FirebaseService
-) : MainRepo {
+) : AuthRepo {
     override suspend fun register(email: String, password: String) {
         firebaseService.registerUser(email, password)
     }

@@ -98,13 +98,16 @@ dependencies {
     implementation ("com.squareup.retrofit2:retrofit:2.11.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation ("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
-        //Hilt
+    //Hilt
     //Dagger - Hilt
     implementation("com.google.dagger:hilt-android:2.55")
     kapt("com.google.dagger:hilt-android-compiler:2.55")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
-        implementation ("androidx.compose.material:material-icons-extended:1.7.8" )
+    implementation ("androidx.compose.material:material-icons-extended:1.7.8" )
 
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+        implementation ("com.google.accompanist:accompanist-placeholder-material:0.28.0")
 
 }

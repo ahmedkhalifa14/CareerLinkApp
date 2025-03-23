@@ -1,6 +1,7 @@
 package com.ahmedkhalifa.careerlinkapp.screens.register
 
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,12 +34,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.wear.compose.material.MaterialTheme
+import androidx.navigation.NavController
 import com.ahmedkhalifa.careerlinkapp.R
 import com.ahmedkhalifa.careerlinkapp.composable.CustomBtn
 import com.ahmedkhalifa.careerlinkapp.composable.CustomImageButton
 import com.ahmedkhalifa.careerlinkapp.composable.CustomTextField
 import com.ahmedkhalifa.careerlinkapp.composable.PasswordTextField
+import com.ahmedkhalifa.careerlinkapp.graphs.AuthScreen
 import com.ahmedkhalifa.careerlinkapp.ui.theme.FacebookIconColor
 import com.ahmedkhalifa.careerlinkapp.ui.theme.GoogleIconColor
 import com.ahmedkhalifa.careerlinkapp.utils.Event
@@ -47,6 +50,7 @@ import com.ahmedkhalifa.careerlinkapp.viewmodel.AuthViewModel
 
 @Composable
 fun RegisterScreen(
+    navController: NavController,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
     val state = viewModel.registerState.collectAsState()
@@ -54,9 +58,11 @@ fun RegisterScreen(
 
 
     LaunchedEffect(state.value) {
+
         state.value.getContentIfNotHandled()?.let { resource ->
             when (resource) {
                 is Resource.Success -> {
+                    navController.navigate(AuthScreen.Login.route)
                     Toast.makeText(
                         context,
                         "Successful Registration,Please Verify your email address!",
@@ -78,14 +84,18 @@ fun RegisterScreen(
         onRegisterClick = { email, password ->
             viewModel.register(email, password)
         },
-        registerState = state.value
+        registerState = state.value,
+        onClickLogin = {
+            navController.navigate(AuthScreen.Login.route)
+        }
     )
 }
 
 @Composable
 fun RegisterScreenContent(
     onRegisterClick: (String, String) -> Unit,
-    registerState: Event<Resource<Unit>>
+    registerState: Event<Resource<Unit>>,
+    onClickLogin: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -106,7 +116,7 @@ fun RegisterScreenContent(
 
         Text(
             text = stringResource(R.string.login_subtitle),
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.bodyMedium,
             fontSize = 20.sp,
             color = Color.Gray,
             lineHeight = 18.sp,
@@ -143,7 +153,7 @@ fun RegisterScreenContent(
 
         Text(
             text = stringResource(R.string.or_continue_with),
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.bodyMedium,
             fontSize = 18.sp,
             color = Color.Gray,
             lineHeight = 18.sp,
@@ -171,7 +181,7 @@ fun RegisterScreenContent(
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Text(
                 text = stringResource(R.string.already_have_account),
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.bodyMedium,
                 fontSize = 18.sp,
                 color = Color.Gray,
                 lineHeight = 18.sp,
@@ -181,12 +191,15 @@ fun RegisterScreenContent(
             )
             Text(
                 text = stringResource(R.string.login),
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.bodyMedium,
                 fontSize = 18.sp,
                 color = Color.Black,
                 lineHeight = 18.sp,
                 modifier = Modifier
                     .padding(bottom = 16.dp)
+                    .clickable {
+                        onClickLogin()
+                    }
             )
         }
 
@@ -214,6 +227,7 @@ fun RegisterScreenContent(
 fun PreviewRegisterScreen() {
     RegisterScreenContent(
         onRegisterClick = { _, _ -> },
-        registerState = Event(Resource.Init())
+        registerState = Event(Resource.Init()),
+        onClickLogin =  {}
     )
 }

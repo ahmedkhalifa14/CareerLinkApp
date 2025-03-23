@@ -2,16 +2,20 @@ package com.ahmedkhalifa.careerlinkapp.screens.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.RowScope
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.*
-import androidx.compose.material3.BottomAppBarDefaults.containerColor
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.layout.height
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.Icon
+import androidx.compose.material.LocalContentColor
+import androidx.compose.material.Text
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -21,7 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ahmedkhalifa.careerlinkapp.BottomBarScreen
 import com.ahmedkhalifa.careerlinkapp.graphs.HomeNavGraph
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(navController: NavHostController = rememberNavController()) {
@@ -45,6 +49,7 @@ fun BottomBar(navController: NavHostController) {
     val bottomBarDestination = screens.any { it.route == currentDestination?.route }
     if (bottomBarDestination) {
         NavigationBar(
+            modifier = Modifier.height(56.dp),
             containerColor = Color.White,
             tonalElevation = NavigationBarDefaults.Elevation,
             windowInsets = NavigationBarDefaults.windowInsets,

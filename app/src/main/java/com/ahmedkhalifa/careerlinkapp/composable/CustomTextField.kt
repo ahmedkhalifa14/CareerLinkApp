@@ -19,7 +19,7 @@ fun CustomTextField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
-    placeholder: String
+    placeholder: String,
     icon: ImageVector,
     modifier: Modifier = Modifier
 ) {

@@ -7,11 +7,11 @@ import retrofit2.http.Query
 interface JobsApiService {
 
     @GET("remote-jobs")
-    suspend fun getRemoteJobs(@Query("limit") page: Int): ParentJob
+    suspend fun getRemoteJobs(@Query("limit") limit: Int): ParentJob
 
     @GET("remote-jobs")
     suspend fun searchForJobs(
-        @Query("limit") page: Int,
+        @Query("limit") limit: Int,
         @Query("search") searchKeyword: String?
     ): ParentJob
 }

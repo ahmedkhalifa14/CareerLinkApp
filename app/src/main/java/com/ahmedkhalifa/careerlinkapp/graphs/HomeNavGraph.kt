@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.ahmedkhalifa.careerlinkapp.BottomBarScreen
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.ahmedkhalifa.careerlinkapp.BottomBarScreen
 import com.ahmedkhalifa.careerlinkapp.ScreenContent
 import com.ahmedkhalifa.careerlinkapp.screens.home.HomePage
 
@@ -18,12 +18,7 @@ fun HomeNavGraph(navController: NavHostController) {
         startDestination = BottomBarScreen.Home.route
     ) {
         composable(route = BottomBarScreen.Home.route) {
-            HomePage(
-                name = BottomBarScreen.Home.route,
-                onClick = {
-                    navController.navigate(Graph.DETAILS)
-                }
-            )
+            HomePage()
         }
         composable(route = BottomBarScreen.Profile.route) {
             ScreenContent(
