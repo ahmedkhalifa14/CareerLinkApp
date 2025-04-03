@@ -1,7 +1,8 @@
 package com.ahmedkhalifa.careerlinkapp.repo
 
-import android.util.Log
 import com.ahmedkhalifa.careerlinkapp.data.network.JobsApiService
+import com.ahmedkhalifa.careerlinkapp.models.Category
+import com.ahmedkhalifa.careerlinkapp.models.Job
 import com.ahmedkhalifa.careerlinkapp.models.ParentJob
 import com.ahmedkhalifa.careerlinkapp.utils.Resource
 import com.ahmedkhalifa.careerlinkapp.utils.Utils.tryCatch
@@ -14,17 +15,25 @@ class ApiRepoImpl
     private val apiService: JobsApiService
 ) : ApiRepo {
 
-    override suspend fun getRemoteJobs(limit: Int): Resource<ParentJob> =
+    override suspend fun getRemoteJobs(limit: Int): Resource<ParentJob<Job>> =
         withContext(Dispatchers.IO) {
             tryCatch {
-                Log.d("API_REQUEST", "Fetching jobs with limit: $limit")
                 val result = apiService.getRemoteJobs(limit)
                 Resource.Success(result)
             }
         }
 
+    override suspend fun getRemoteJobsCategories(): Resource<ParentJob<Category>> =
+        withContext(Dispatchers.IO) {
+            tryCatch {
+                val result = apiService.getRemoteJobsCategories()
+                Resource.Success(result)
+            }
+        }
 
-    override suspend fun searchForJobs(limit: Int, searchKeyword: String?): Resource<ParentJob> =
+
+
+    override suspend fun searchForJobs(limit: Int, searchKeyword: String?): Resource<ParentJob<Job>> =
         withContext(Dispatchers.IO) {
             tryCatch {
                 val result = apiService.searchForJobs(limit, searchKeyword)

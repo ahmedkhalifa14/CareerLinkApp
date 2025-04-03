@@ -3,6 +3,8 @@ package com.ahmedkhalifa.careerlinkapp.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ahmedkhalifa.careerlinkapp.models.Category
+import com.ahmedkhalifa.careerlinkapp.models.Job
 import com.ahmedkhalifa.careerlinkapp.models.ParentJob
 import com.ahmedkhalifa.careerlinkapp.repo.ApiRepo
 import com.ahmedkhalifa.careerlinkapp.utils.Event
@@ -15,9 +17,21 @@ import javax.inject.Inject
 @HiltViewModel
 class ApiViewModel @Inject constructor(private val mainRepo: ApiRepo) : ViewModel() {
     private val _remoteJobsState =
-        MutableStateFlow<Event<Resource<ParentJob>>>(Event(Resource.Init()))
-    val remoteJobsState: MutableStateFlow<Event<Resource<ParentJob>>> = _remoteJobsState
+        MutableStateFlow<Event<Resource<ParentJob<Job>>>>(Event(Resource.Init()))
+    val remoteJobsState: MutableStateFlow<Event<Resource<ParentJob<Job>>>> = _remoteJobsState
     private var currentLimit = 20
+
+    private val _remoteJobsCategoriesState =
+        MutableStateFlow<Event<Resource<ParentJob<Category>>>>(Event(Resource.Init()))
+    val remoteJobsCategoriesState: MutableStateFlow<Event<Resource<ParentJob<Category>>>> =
+        _remoteJobsCategoriesState
+    fun getRemoteJobsCategories() {
+        viewModelScope.launch {
+            _remoteJobsCategoriesState.emit(Event(Resource.Loading()))
+            val result = mainRepo.getRemoteJobsCategories()
+            _remoteJobsCategoriesState.emit(Event(result))
+        }
+    }
 
     fun getRemoteJobs(limit: Int) {
         viewModelScope.launch {
@@ -26,15 +40,27 @@ class ApiViewModel @Inject constructor(private val mainRepo: ApiRepo) : ViewMode
             _remoteJobsState.emit(Event(result))
         }
     }
+    private var lastRequestTime: Long = 0
+    private val requestDelay: Long = 10000 // 10 seconds delay
+
     fun loadMoreJobs() {
-        currentLimit += 5
-        Log.d("Viewmodel Log", "current limit is $currentLimit")
-        getRemoteJobs(currentLimit)
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastRequestTime >= requestDelay) {
+            currentLimit += 5
+            getRemoteJobs(currentLimit)
+            lastRequestTime = currentTime
+        } else {
+            // Optionally, show a message to the user that they are refreshing too quickly.
+            Log.d("ApiViewModel", "Request blocked due to rate limiting.")
+        }
     }
 
+
+
+
     private val _searchJobsState =
-        MutableStateFlow<Event<Resource<ParentJob>>>(Event(Resource.Init()))
-    val searchJobsState: MutableStateFlow<Event<Resource<ParentJob>>> = _searchJobsState
+        MutableStateFlow<Event<Resource<ParentJob<Job>>>>(Event(Resource.Init()))
+    val searchJobsState: MutableStateFlow<Event<Resource<ParentJob<Job>>>> = _searchJobsState
 
     fun searchForJobs(page: Int, searchKeyword: String?) {
         viewModelScope.launch {

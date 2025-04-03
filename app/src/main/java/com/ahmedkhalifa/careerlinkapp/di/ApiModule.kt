@@ -12,6 +12,7 @@ import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -46,13 +47,15 @@ object ApiModule {
             val request: Request = interceptor.request()
             val newReq = request.newBuilder()
                 .header("lang", "en")
-                .header("Content-Type", "application/json")
+                .header("User-Agent", "CareerLinkApp/1.0")
                 .method(request.method, request.body)
                 .build()
             interceptor.proceed(newReq)
         }.addNetworkInterceptor(interceptor)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
             .build()
-
 
 
 }
