@@ -1,9 +1,12 @@
 package com.ahmedkhalifa.careerlinkapp.models
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+
+@Serializable
 data class Job(
-    @SerializedName("candidate_required_location")
+    @SerialName("candidate_required_location")
     val location: String?,
     val category: String?,
     val company_logo: String?,

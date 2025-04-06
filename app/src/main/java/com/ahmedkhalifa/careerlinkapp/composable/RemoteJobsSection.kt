@@ -15,6 +15,7 @@ fun RemoteJobsSection(
     jobs: List<Job>?,
     isLoading: Boolean,
     errorMessage: String?,
+    onJobClick: (Job) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -30,7 +31,7 @@ fun RemoteJobsSection(
         } else if (jobs != null) {
 
             jobs.forEach { job ->
-                RemoteJobCard(job = job)
+                RemoteJobCard(job = job, onClick = { onJobClick(job) })
                 Spacer(modifier = Modifier.height(8.dp))
             }
         } else {

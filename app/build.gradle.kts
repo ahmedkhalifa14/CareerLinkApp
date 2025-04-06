@@ -6,6 +6,7 @@ plugins {
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     id("com.google.gms.google-services")
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0" // this version matches your Kotlin version)
 }
 
 android {
@@ -82,9 +83,9 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
     val accompanistVersion = "0.36.0"
-    implementation ("androidx.compose.material:material:1.7.8")
+    implementation("androidx.compose.material:material:1.7.8")
 
-    implementation ("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
     val navVersion = "2.8.8"
 
     implementation("androidx.navigation:navigation-compose:$navVersion")
@@ -93,21 +94,26 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14")
     //coil
-    implementation ("io.coil-kt:coil-compose:2.7.0")
+    implementation("io.coil-kt:coil-compose:2.7.0")
 //Retorfit
-    implementation ("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
-    implementation ("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
     //Hilt
     //Dagger - Hilt
     implementation("com.google.dagger:hilt-android:2.55")
     kapt("com.google.dagger:hilt-android-compiler:2.55")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
-    implementation ("androidx.compose.material:material-icons-extended:1.7.8" )
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
 
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
-        implementation ("com.google.accompanist:accompanist-placeholder-material:0.28.0")
+    implementation("com.google.accompanist:accompanist-placeholder-material:0.28.0")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    // Kotlin Serialization
+   // implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:2.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
 
 }

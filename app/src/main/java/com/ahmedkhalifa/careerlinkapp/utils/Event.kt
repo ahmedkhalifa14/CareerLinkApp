@@ -18,7 +18,7 @@ class Event<out T>(private val content: T) {
 }
 
 class EventObserver<T>(
-    private inline val onError: ((String) -> Unit)? = null,
+       private inline val onError: ((String) -> Unit)? = null,
     private inline val onLoading: (() -> Unit)? = null,
     private inline val onSuccess: (T) -> Unit
 ) : FlowCollector<Event<Resource<T>>> {

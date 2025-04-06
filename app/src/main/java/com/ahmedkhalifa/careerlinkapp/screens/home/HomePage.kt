@@ -2,6 +2,7 @@ package com.ahmedkhalifa.careerlinkapp.screens.home
 
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.ahmedkhalifa.careerlinkapp.R
 import com.ahmedkhalifa.careerlinkapp.composable.JobCategoriesSection
@@ -54,15 +56,18 @@ import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
 import com.ahmedkhalifa.careerlinkapp.utils.Event
 import com.ahmedkhalifa.careerlinkapp.utils.Resource
 import com.ahmedkhalifa.careerlinkapp.viewmodel.ApiViewModel
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 
 @Composable
 
 fun HomePage(
+    navigationController: NavController? = null,
     apiViewModel: ApiViewModel = hiltViewModel()
 ) {
     val remoteJobsState = apiViewModel.remoteJobsState.collectAsState()
-    val remoteJobsCategoriesState = apiViewM\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\;;;odel.remoteJobsCategoriesState.collectAsState()
+    val remoteJobsCategoriesState = apiViewModel.remoteJobsCategoriesState.collectAsState()
     LaunchedEffect(key1 = true) {
         apiViewModel.getRemoteJobs(20)
         apiViewModel.getRemoteJobsCategories()
@@ -73,7 +78,12 @@ fun HomePage(
         refreshJobs = {
             apiViewModel.loadMoreJobs()
             apiViewModel.getRemoteJobsCategories()
+        },
+        onRemoteJobCardClick = { job ->
+            val jobJson = Uri.encode(Json.encodeToString(job))
+            navigationController!!.navigate("information/$jobJson")
         }
+
     )
 }
 
@@ -84,7 +94,7 @@ fun HomePageContent(
     remoteJobsState: Event<Resource<ParentJob<Job>>>,
     remoteJobsCategoriesState: Event<Resource<ParentJob<Category>>>,
     refreshJobs: () -> Unit,
-    onRemoteJobCardClick: (Job) -> Unit = {}
+    onRemoteJobCardClick: (Job) -> Unit = {},
 ) {
     val screenBackgroundColor= getColor(AppColors.AppColorSet.AppScreenBackgroundColor)
     val refreshing = remember { mutableStateOf(false) } // Manage refreshing state
@@ -139,7 +149,8 @@ fun HomePageContent(
                         jobs = remoteJobsState.peekContent().data?.jobs,
                         isLoading = remoteJobsState.peekContent() is Resource.Loading,
                         errorMessage = (remoteJobsState.peekContent() as? Resource.Error)?.message,
-                    )
+                        onJobClick = onRemoteJobCardClick
+                        )
                 }
             }
         }
@@ -169,7 +180,7 @@ fun JobCard(job: Job) {
                     Icon(
                         painter = painterResource(id = R.drawable.save_ic),
                         contentDescription = "Favorite"
-                    ) // Replace with your heart icon
+                    )
                 }
             }
 
