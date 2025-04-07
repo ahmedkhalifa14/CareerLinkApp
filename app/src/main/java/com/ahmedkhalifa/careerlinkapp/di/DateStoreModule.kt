@@ -1,11 +1,6 @@
 package com.ahmedkhalifa.careerlinkapp.di
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import com.ahmedkhalifa.careerlinkapp.data.local.DataStoreManager
-import com.ahmedkhalifa.careerlinkapp.repo.SettingsRepo
-import com.ahmedkhalifa.careerlinkapp.repo.SettingsRepoImpl
+import com.ahmedkhalifa.careerlinkapp.data.local.datastore.DataStoreManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

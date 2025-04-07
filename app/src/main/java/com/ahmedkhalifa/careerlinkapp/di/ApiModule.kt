@@ -1,7 +1,7 @@
 
 package com.ahmedkhalifa.careerlinkapp.di
 
-import com.ahmedkhalifa.careerlinkapp.data.network.JobsApiService
+import com.ahmedkhalifa.careerlinkapp.data.network.api.JobsApiService
 import com.ahmedkhalifa.careerlinkapp.utils.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides

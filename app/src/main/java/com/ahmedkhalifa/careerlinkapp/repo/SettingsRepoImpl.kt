@@ -1,7 +1,7 @@
 package com.ahmedkhalifa.careerlinkapp.repo
 
 import android.util.Log
-import com.ahmedkhalifa.careerlinkapp.data.local.DataStoreManager
+import com.ahmedkhalifa.careerlinkapp.data.local.datastore.DataStoreManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject

@@ -1,13 +1,16 @@
 package com.ahmedkhalifa.careerlinkapp.di
 
 import android.content.Context
-import com.ahmedkhalifa.careerlinkapp.data.local.DataStoreManager
-import com.ahmedkhalifa.careerlinkapp.data.network.FirebaseService
-import com.ahmedkhalifa.careerlinkapp.data.network.JobsApiService
+import com.ahmedkhalifa.careerlinkapp.data.local.datastore.DataStoreManager
+import com.ahmedkhalifa.careerlinkapp.data.local.roomdb.JobDao
+import com.ahmedkhalifa.careerlinkapp.data.network.api.JobsApiService
+import com.ahmedkhalifa.careerlinkapp.data.network.firebase.FirebaseService
 import com.ahmedkhalifa.careerlinkapp.repo.ApiRepo
 import com.ahmedkhalifa.careerlinkapp.repo.ApiRepoImpl
 import com.ahmedkhalifa.careerlinkapp.repo.AuthRepo
 import com.ahmedkhalifa.careerlinkapp.repo.AuthRepoImpl
+import com.ahmedkhalifa.careerlinkapp.repo.RoomDbRepo
+import com.ahmedkhalifa.careerlinkapp.repo.RoomDbRepoImp
 import com.ahmedkhalifa.careerlinkapp.repo.SettingsRepo
 import com.ahmedkhalifa.careerlinkapp.repo.SettingsRepoImpl
 import dagger.Module
@@ -35,6 +38,13 @@ object RepoModule {
     fun provideSettingsRepo(dataStoreManager: DataStoreManager): SettingsRepo {
         return SettingsRepoImpl(dataStoreManager)
     }
+
+    @Provides
+    @Singleton
+    fun provideRoomDbRepo(jobDao: JobDao):RoomDbRepo{
+        return RoomDbRepoImp(jobDao)
+    }
+
     @Singleton
     @Provides
     fun provideApplicationContext(

@@ -1,4 +1,4 @@
-package com.ahmedkhalifa.careerlinkapp.data.local
+package com.ahmedkhalifa.careerlinkapp.data.local.datastore
 
 import android.content.Context
 import android.util.Log

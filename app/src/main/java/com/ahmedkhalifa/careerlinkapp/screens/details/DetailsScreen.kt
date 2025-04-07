@@ -1,7 +1,6 @@
 package com.ahmedkhalifa.careerlinkapp.screens.details
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,6 +23,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.ahmedkhalifa.careerlinkapp.R
@@ -43,27 +45,50 @@ import com.ahmedkhalifa.careerlinkapp.models.Job
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppMainColor
 import com.ahmedkhalifa.careerlinkapp.utils.timeSince
+import com.ahmedkhalifa.careerlinkapp.viewmodel.RoomViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DetailsScreen(
     navController: NavController,
-    job: Job?
+    job: Job?,
+    roomViewModel: RoomViewModel = hiltViewModel()
 ) {
-    val arguments = navController.previousBackStackEntry?.arguments
-    Log.d("DetailsScreen", "Arguments: ${job!!.title}")
+    val jobExistState = roomViewModel.isJobSavedState.collectAsState()
 
+    LaunchedEffect(job?.id) {
+        job?.id?.let { roomViewModel.checkIfJobExists(it) }
+    }
+    val isJobSaved = jobExistState.value.peekContent().data ?: false
 
     DetailsScreenContent(
-        jobState = job
+        jobState = job,
+        isJobSaved = isJobSaved,
+        onClickSave = { job ->
+            if (isJobSaved){
+                job.id?.let { roomViewModel.deleteJob(it)
+                roomViewModel.checkIfJobExists(job.id)
+                }
+            }else{
+                roomViewModel.insertJob(job)
+                job.id?.let { roomViewModel.checkIfJobExists(it) }
+            }
+        }
+        ,
+        onClickApply = {
+
+        }
     )
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DetailsScreenContent(
-    jobState: Job? = null
+    jobState: Job? = null,
+    isJobSaved: Boolean = false,
+    onClickSave: (Job) -> Unit = {},
+    onClickApply : (Job) -> Unit = {},
 ) {
     val screenBackgroundColor = getColor(AppColors.AppColorSet.AppScreenBackgroundColor)
     val textColor = getColor(AppColors.AppColorSet.AppMainTextColor)
@@ -105,9 +130,9 @@ fun DetailsScreenContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Card(modifier = Modifier.background(cardBackgroundColor)) {
-                IconButton(onClick = { }) {
+                IconButton(onClick = { onClickSave(jobState) }) {
                     Icon(
-                        painter = painterResource(id = R.drawable.save_ic),
+                        painter = painterResource(id = if (isJobSaved) R.drawable.marked_ic else R.drawable.not_marked_ic),
                         contentDescription = "Favorite"
                     )
                 }
@@ -116,7 +141,7 @@ fun DetailsScreenContent(
             Card(modifier = Modifier.background(cardBackgroundColor)) {
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
-                        painter = painterResource(id = R.drawable.save_ic),
+                        painter = painterResource(id = R.drawable.share_ic),
                         contentDescription = "Share"
                     )
                 }

@@ -1,4 +1,4 @@
-package com.ahmedkhalifa.careerlinkapp.data.network
+package com.ahmedkhalifa.careerlinkapp.data.network.firebase
 
 import android.util.Log
 import com.ahmedkhalifa.careerlinkapp.models.User

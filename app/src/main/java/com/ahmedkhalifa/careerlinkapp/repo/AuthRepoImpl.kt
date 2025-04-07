@@ -1,6 +1,6 @@
 package com.ahmedkhalifa.careerlinkapp.repo
 
-import com.ahmedkhalifa.careerlinkapp.data.network.FirebaseService
+import com.ahmedkhalifa.careerlinkapp.data.network.firebase.FirebaseService
 import com.ahmedkhalifa.careerlinkapp.models.User
 import com.ahmedkhalifa.careerlinkapp.utils.LoginResult
 import javax.inject.Inject

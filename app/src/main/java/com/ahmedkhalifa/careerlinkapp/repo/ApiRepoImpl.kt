@@ -1,6 +1,6 @@
 package com.ahmedkhalifa.careerlinkapp.repo
 
-import com.ahmedkhalifa.careerlinkapp.data.network.JobsApiService
+import com.ahmedkhalifa.careerlinkapp.data.network.api.JobsApiService
 import com.ahmedkhalifa.careerlinkapp.models.Category
 import com.ahmedkhalifa.careerlinkapp.models.Job
 import com.ahmedkhalifa.careerlinkapp.models.ParentJob

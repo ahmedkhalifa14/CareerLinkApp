@@ -1,4 +1,4 @@
-package com.ahmedkhalifa.careerlinkapp.data.network
+package com.ahmedkhalifa.careerlinkapp.data.network.api
 
 import com.ahmedkhalifa.careerlinkapp.models.Category
 import com.ahmedkhalifa.careerlinkapp.models.Job
