@@ -3,7 +3,7 @@ package com.ahmedkhalifa.careerlinkapp.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ahmedkhalifa.careerlinkapp.repo.SettingsRepo
+import com.ahmedkhalifa.careerlinkapp.repo.settings.SettingsRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

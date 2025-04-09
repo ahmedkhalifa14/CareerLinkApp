@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.ahmedkhalifa.careerlinkapp.models.Category
 import com.ahmedkhalifa.careerlinkapp.models.Job
 import com.ahmedkhalifa.careerlinkapp.models.ParentJob
-import com.ahmedkhalifa.careerlinkapp.repo.ApiRepo
+import com.ahmedkhalifa.careerlinkapp.repo.api.ApiRepo
 import com.ahmedkhalifa.careerlinkapp.utils.Event
 import com.ahmedkhalifa.careerlinkapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel

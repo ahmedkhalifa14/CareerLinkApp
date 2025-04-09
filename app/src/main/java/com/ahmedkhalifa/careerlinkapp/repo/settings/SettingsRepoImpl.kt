@@ -1,4 +1,4 @@
-package com.ahmedkhalifa.careerlinkapp.repo
+package com.ahmedkhalifa.careerlinkapp.repo.settings
 
 import android.util.Log
 import com.ahmedkhalifa.careerlinkapp.data.local.datastore.DataStoreManager

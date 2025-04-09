@@ -1,4 +1,4 @@
-package com.ahmedkhalifa.careerlinkapp.repo
+package com.ahmedkhalifa.careerlinkapp.repo.api
 
 import com.ahmedkhalifa.careerlinkapp.models.Category
 import com.ahmedkhalifa.careerlinkapp.models.Job

@@ -1,4 +1,4 @@
-package com.ahmedkhalifa.careerlinkapp.repo
+package com.ahmedkhalifa.careerlinkapp.repo.settings
 
 import kotlinx.coroutines.flow.Flow
 

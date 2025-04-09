@@ -3,7 +3,7 @@ package com.ahmedkhalifa.careerlinkapp.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ahmedkhalifa.careerlinkapp.models.User
-import com.ahmedkhalifa.careerlinkapp.repo.AuthRepo
+import com.ahmedkhalifa.careerlinkapp.repo.auth.AuthRepo
 import com.ahmedkhalifa.careerlinkapp.utils.Event
 import com.ahmedkhalifa.careerlinkapp.utils.LoginResult
 import com.ahmedkhalifa.careerlinkapp.utils.Resource

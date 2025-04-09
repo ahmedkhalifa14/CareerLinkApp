@@ -1,4 +1,4 @@
-package com.ahmedkhalifa.careerlinkapp.repo
+package com.ahmedkhalifa.careerlinkapp.repo.room
 
 import com.ahmedkhalifa.careerlinkapp.data.local.roomdb.JobDao
 import com.ahmedkhalifa.careerlinkapp.models.Job

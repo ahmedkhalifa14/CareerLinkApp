@@ -5,14 +5,16 @@ import com.ahmedkhalifa.careerlinkapp.data.local.datastore.DataStoreManager
 import com.ahmedkhalifa.careerlinkapp.data.local.roomdb.JobDao
 import com.ahmedkhalifa.careerlinkapp.data.network.api.JobsApiService
 import com.ahmedkhalifa.careerlinkapp.data.network.firebase.FirebaseService
-import com.ahmedkhalifa.careerlinkapp.repo.ApiRepo
-import com.ahmedkhalifa.careerlinkapp.repo.ApiRepoImpl
-import com.ahmedkhalifa.careerlinkapp.repo.AuthRepo
-import com.ahmedkhalifa.careerlinkapp.repo.AuthRepoImpl
-import com.ahmedkhalifa.careerlinkapp.repo.RoomDbRepo
-import com.ahmedkhalifa.careerlinkapp.repo.RoomDbRepoImp
-import com.ahmedkhalifa.careerlinkapp.repo.SettingsRepo
-import com.ahmedkhalifa.careerlinkapp.repo.SettingsRepoImpl
+import com.ahmedkhalifa.careerlinkapp.repo.api.ApiRepo
+import com.ahmedkhalifa.careerlinkapp.repo.api.ApiRepoImpl
+import com.ahmedkhalifa.careerlinkapp.repo.auth.AuthRepo
+import com.ahmedkhalifa.careerlinkapp.repo.auth.AuthRepoImpl
+import com.ahmedkhalifa.careerlinkapp.repo.room.RoomDbRepo
+import com.ahmedkhalifa.careerlinkapp.repo.room.RoomDbRepoImp
+import com.ahmedkhalifa.careerlinkapp.repo.settings.SettingsRepo
+import com.ahmedkhalifa.careerlinkapp.repo.settings.SettingsRepoImpl
+import com.ahmedkhalifa.careerlinkapp.repo.user.UserRepo
+import com.ahmedkhalifa.careerlinkapp.repo.user.UserRepoImp
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,8 +43,14 @@ object RepoModule {
 
     @Provides
     @Singleton
-    fun provideRoomDbRepo(jobDao: JobDao):RoomDbRepo{
+    fun provideRoomDbRepo(jobDao: JobDao): RoomDbRepo {
         return RoomDbRepoImp(jobDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserRepo(firebaseService: FirebaseService):UserRepo{
+        return UserRepoImp(firebaseService)
     }
 
     @Singleton

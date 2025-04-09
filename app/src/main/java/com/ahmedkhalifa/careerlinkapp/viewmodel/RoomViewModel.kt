@@ -3,7 +3,7 @@ package com.ahmedkhalifa.careerlinkapp.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ahmedkhalifa.careerlinkapp.models.Job
-import com.ahmedkhalifa.careerlinkapp.repo.RoomDbRepo
+import com.ahmedkhalifa.careerlinkapp.repo.room.RoomDbRepo
 import com.ahmedkhalifa.careerlinkapp.utils.Event
 import com.ahmedkhalifa.careerlinkapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel

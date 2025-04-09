@@ -1,7 +1,6 @@
 package com.ahmedkhalifa.careerlinkapp.composable
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,11 +28,19 @@ import com.ahmedkhalifa.careerlinkapp.utils.truncate
 
 @Composable
 
-fun RemoteJobCard(job: Job, onClick:()->Unit) {
-    val cardBackgroundColor= getColor(AppColors.AppColorSet.AppCardBackgroundColor)
-    val textColor= getColor(AppColors.AppColorSet.AppMainTextColor)
-    val textSecondColor= getColor(AppColors.AppColorSet.AppSecondTextColor)
-    Card(modifier = Modifier.fillMaxWidth().background(cardBackgroundColor).clickable { onClick() }) {
+fun RemoteJobCard(job: Job, onClick: () -> Unit) {
+    val cardBackgroundColor = getColor(AppColors.AppColorSet.AppCardBackgroundColor)
+    val textColor = getColor(AppColors.AppColorSet.AppMainTextColor)
+    val textSecondColor = getColor(AppColors.AppColorSet.AppSecondTextColor)
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }, colors = CardDefaults.cardColors(
+            containerColor = cardBackgroundColor
+        )
+    )
+
+    {
         Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
             Image(
                 painter = rememberAsyncImagePainter(
@@ -48,7 +56,14 @@ fun RemoteJobCard(job: Job, onClick:()->Unit) {
             Spacer(modifier = Modifier.width(16.dp))
 
             Column {
-                job.title?.let { Text(it, fontWeight = FontWeight.Bold, maxLines = 1, color = textColor) }
+                job.title?.let {
+                    Text(
+                        it,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        color = textColor
+                    )
+                }
                 job.job_type?.let { Text(it.truncate(20), color = textSecondColor) }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
@@ -61,7 +76,7 @@ fun RemoteJobCard(job: Job, onClick:()->Unit) {
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
-                        painter = painterResource(id = R.drawable.location_ic), // Replace with your location icon
+                        painter = painterResource(id = R.drawable.location_ic),
                         contentDescription = "Location Icon",
                         modifier = Modifier.size(16.dp)
                     )

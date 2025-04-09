@@ -4,29 +4,22 @@ package com.ahmedkhalifa.careerlinkapp.screens.home
 import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.IconButton
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -34,15 +27,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.compose.rememberAsyncImagePainter
-import com.ahmedkhalifa.careerlinkapp.R
 import com.ahmedkhalifa.careerlinkapp.composable.JobCategoriesSection
 import com.ahmedkhalifa.careerlinkapp.composable.RemoteJobsSection
 import com.ahmedkhalifa.careerlinkapp.composable.SearchBar
@@ -59,19 +46,21 @@ import com.ahmedkhalifa.careerlinkapp.viewmodel.ApiViewModel
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-
 @Composable
-
 fun HomePage(
     navigationController: NavController? = null,
-    apiViewModel: ApiViewModel = hiltViewModel()
+    apiViewModel: ApiViewModel = hiltViewModel(),
+    listState: LazyListState,
+    isScrollingDown: Boolean
 ) {
     val remoteJobsState = apiViewModel.remoteJobsState.collectAsState()
     val remoteJobsCategoriesState = apiViewModel.remoteJobsCategoriesState.collectAsState()
+
     LaunchedEffect(key1 = true) {
         apiViewModel.getRemoteJobs(20)
         apiViewModel.getRemoteJobsCategories()
     }
+
     HomePageContent(
         remoteJobsState = remoteJobsState.value,
         remoteJobsCategoriesState = remoteJobsCategoriesState.value,
@@ -82,10 +71,12 @@ fun HomePage(
         onRemoteJobCardClick = { job ->
             val jobJson = Uri.encode(Json.encodeToString(job))
             navigationController!!.navigate("information/$jobJson")
-        }
-
+        },
+        listState = listState,
+        isScrollingDown = isScrollingDown
     )
 }
+
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
@@ -95,8 +86,10 @@ fun HomePageContent(
     remoteJobsCategoriesState: Event<Resource<ParentJob<Category>>>,
     refreshJobs: () -> Unit,
     onRemoteJobCardClick: (Job) -> Unit = {},
+    listState: LazyListState,
+    isScrollingDown: Boolean
 ) {
-    val screenBackgroundColor= getColor(AppColors.AppColorSet.AppScreenBackgroundColor)
+    val screenBackgroundColor = getColor(AppColors.AppColorSet.AppScreenBackgroundColor)
     val refreshing = remember { mutableStateOf(false) } // Manage refreshing state
     val pullRefreshState = rememberPullRefreshState(refreshing.value, {
         refreshing.value = true
@@ -112,6 +105,7 @@ fun HomePageContent(
         ) {
             TopBar()
             LazyColumn(
+                state = listState,  // Set the state of LazyColumn to track the scroll
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
@@ -137,7 +131,6 @@ fun HomePageContent(
                                 errorMessage = (remoteJobsCategoriesState.peekContent() as? Resource.Error)?.message,
                             )
                         }
-
                     }
                 }
 
@@ -150,7 +143,7 @@ fun HomePageContent(
                         isLoading = remoteJobsState.peekContent() is Resource.Loading,
                         errorMessage = (remoteJobsState.peekContent() as? Resource.Error)?.message,
                         onJobClick = onRemoteJobCardClick
-                        )
+                    )
                 }
             }
         }
@@ -161,41 +154,8 @@ fun HomePageContent(
         )
     }
 }
-
-
-@Composable
-fun JobCard(job: Job) {
-    Card(modifier = Modifier.width(200.dp)) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = rememberAsyncImagePainter(model = job.company_logo_url),
-                    contentDescription = ""
-                )
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.save_ic),
-                        contentDescription = "Favorite"
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            job.title?.let { Text(it, fontWeight = FontWeight.Bold) }
-            Text("${job.salary}/m ${job.location}", color = Color.Gray)
-        }
-    }
-}
-
-
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewHomePage() {
-    HomePage()
-}
+//@Preview(showBackground = true, showSystemUi = true)
+//@Composable
+//fun PreviewHomePage() {
+//    HomePage(listState = listState, isScrollingDown = isScrollingDown)
+//}

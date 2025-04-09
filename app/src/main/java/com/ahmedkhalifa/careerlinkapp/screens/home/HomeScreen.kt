@@ -1,8 +1,15 @@
 package com.ahmedkhalifa.careerlinkapp.screens.home
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
@@ -12,7 +19,11 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
@@ -26,30 +37,47 @@ import com.ahmedkhalifa.careerlinkapp.composable.getColor
 import com.ahmedkhalifa.careerlinkapp.graphs.HomeNavGraph
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
 
-
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(navController: NavHostController = rememberNavController()) {
+    val listState = rememberLazyListState()
+
+    // Track if the user is scrolling down
+    val isScrollingDown = rememberScrollDirection(listState)
+
     Scaffold(
-        bottomBar = { BottomBar(navController = navController) }
+        bottomBar = {
+            BottomBar(
+                navController = navController,
+                isVisible = !isScrollingDown // Hide Bottom Bar when scrolling down
+            )
+        }
     ) {
-        HomeNavGraph(navController = navController)
+        HomeNavGraph(navController = navController, listState = listState)
     }
 }
 
 @Composable
-fun BottomBar(navController: NavHostController) {
-    val bottomBarBackgroundColor= getColor(AppColors.AppColorSet.AppScreenBackgroundColor)
+fun BottomBar(navController: NavHostController, isVisible: Boolean) {
+    val bottomBarBackgroundColor = getColor(AppColors.AppColorSet.AppScreenBackgroundColor)
+
     val screens = listOf(
         BottomBarScreen.Home,
         BottomBarScreen.Settings,
         BottomBarScreen.Profile
     )
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-
     val bottomBarDestination = screens.any { it.route == currentDestination?.route }
-    if (bottomBarDestination) {
+
+    // Use AnimatedVisibility to control bottom bar visibility
+    AnimatedVisibility(
+        visible = bottomBarDestination && isVisible,
+        enter = slideInVertically(initialOffsetY = { it }), // Slide in from the bottom
+        exit = slideOutVertically(targetOffsetY = { it })   // Slide out to the bottom
+    ) {
         NavigationBar(
             modifier = Modifier.height(56.dp),
             containerColor = bottomBarBackgroundColor,
@@ -73,11 +101,11 @@ fun RowScope.AddItem(
     currentDestination: NavDestination?,
     navController: NavHostController
 ) {
-    val iconColor= getColor(AppColors.AppColorSet.AppIconColor)
-    val textColor= getColor(AppColors.AppColorSet.AppMainTextColor)
+    val iconColor = getColor(AppColors.AppColorSet.AppIconColor)
+    val textColor = getColor(AppColors.AppColorSet.AppMainTextColor)
     BottomNavigationItem(
         label = {
-            Text(text = screen.title,color=textColor)
+            Text(text = screen.title, color = textColor)
         },
         icon = {
             Icon(
@@ -97,4 +125,26 @@ fun RowScope.AddItem(
             }
         }
     )
+}
+
+
+@Composable
+fun rememberScrollDirection(listState: LazyListState): Boolean {
+    var lastScrollOffset by remember { mutableStateOf(0) }
+    var lastIndex by remember { mutableStateOf(0) }
+
+    return remember {
+        derivedStateOf {
+            val isScrollingDown = when {
+                listState.firstVisibleItemIndex > lastIndex -> true
+                listState.firstVisibleItemIndex < lastIndex -> false
+                else -> listState.firstVisibleItemScrollOffset > lastScrollOffset
+            }
+
+            lastIndex = listState.firstVisibleItemIndex
+            lastScrollOffset = listState.firstVisibleItemScrollOffset
+
+            isScrollingDown
+        }
+    }.value
 }

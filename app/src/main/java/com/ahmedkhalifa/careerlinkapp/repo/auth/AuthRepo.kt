@@ -1,4 +1,4 @@
-package com.ahmedkhalifa.careerlinkapp.repo
+package com.ahmedkhalifa.careerlinkapp.repo.auth
 
 import com.ahmedkhalifa.careerlinkapp.models.User
 import com.ahmedkhalifa.careerlinkapp.utils.LoginResult

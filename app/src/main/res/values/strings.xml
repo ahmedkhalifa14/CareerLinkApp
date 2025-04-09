@@ -29,5 +29,14 @@
     <string name="enter_your_email_address">Enter your email address</string>
     <string name="enter_your_password">Enter your password</string>
     <string name="password_must_be_at_least_8_characters_long">Password must be at least 8 characters long</string>
+    <string name="account">Account</string>
+    <string name="edit_and_manage_your_account">Edit and manage your account</string>
+    <string name="change_profile_picture">Change profile picture</string>
+    <string name="first_name">First name</string>
+    <string name="second_name">Second name</string>
+    <string name="location">Location</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="save">save</string>
 
 </resources>
