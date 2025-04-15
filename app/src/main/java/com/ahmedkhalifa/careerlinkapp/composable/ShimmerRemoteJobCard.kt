@@ -15,12 +15,13 @@ import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
 import com.google.accompanist.placeholder.material.placeholder
 
 @Composable
 fun ShimmerRemoteJobCard() {
+    val shimmerColor = getColor(AppColors.AppColorSet.AppCardBackgroundColor)
 
     Card(
         modifier = Modifier
@@ -35,7 +36,7 @@ fun ShimmerRemoteJobCard() {
             Box(
                 modifier = Modifier
                     .size(50.dp)
-                    .background(Color.LightGray, RoundedCornerShape(8.dp))
+                    .background(shimmerColor, RoundedCornerShape(8.dp))
                     .placeholder(visible = true)
             )
 
@@ -46,7 +47,7 @@ fun ShimmerRemoteJobCard() {
                     modifier = Modifier
                         .height(16.dp)
                         .fillMaxWidth(0.6f)
-                        .background(Color.LightGray, RoundedCornerShape(4.dp))
+                        .background(shimmerColor, RoundedCornerShape(4.dp))
                         .placeholder(visible = true)
                 )
 
@@ -56,7 +57,7 @@ fun ShimmerRemoteJobCard() {
                     modifier = Modifier
                         .height(14.dp)
                         .fillMaxWidth(0.4f)
-                        .background(Color.LightGray, RoundedCornerShape(4.dp))
+                        .background(shimmerColor, RoundedCornerShape(4.dp))
                         .placeholder(visible = true)
                 )
 
@@ -66,7 +67,7 @@ fun ShimmerRemoteJobCard() {
                     modifier = Modifier
                         .height(12.dp)
                         .fillMaxWidth(0.5f)
-                        .background(Color.LightGray, RoundedCornerShape(4.dp))
+                        .background(shimmerColor, RoundedCornerShape(4.dp))
                         .placeholder(visible = true)
                 )
             }

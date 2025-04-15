@@ -34,14 +34,10 @@ class SettingsRepoImpl @Inject constructor(private val dataStoreManager: DataSto
         Log.d("repo", "setFirstTimeLaunch: $isFirstTimeLaunch")
     }
 
-//    override fun isFirstTimeLaunch(): Flow<Boolean> {
-//        return dataStoreManager.getBoolean(FIRST_TIME_LAUNCH_KEY, true)
-//    }
-
     override  fun isFirstTimeLaunch(): Flow<Boolean> {
-        Log.d("SettingsRepoImpl", "isFirstTimeLaunch() called") // Debug log
-        return dataStoreManager.getBoolean(FIRST_TIME_LAUNCH_KEY, true)
-            .onEach { Log.d("SettingsRepoImpl", "DataStore emits: $it") } // Debug log
+        Log.d("SettingsRepoImpl", "isFirstTimeLaunch() called")
+        return dataStoreManager.getBoolean(FIRST_TIME_LAUNCH_KEY)
+            .onEach { Log.d("SettingsRepoImpl", "DataStore emits: $it") }
     }
 
 }

@@ -21,6 +21,7 @@ import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,6 +46,7 @@ import com.ahmedkhalifa.careerlinkapp.composable.getColor
 import com.ahmedkhalifa.careerlinkapp.models.Job
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppMainColor
+import com.ahmedkhalifa.careerlinkapp.ui.theme.Tajawal
 import com.ahmedkhalifa.careerlinkapp.utils.timeSince
 import com.ahmedkhalifa.careerlinkapp.viewmodel.RoomViewModel
 
@@ -129,7 +132,12 @@ fun DetailsScreenContent(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Card(modifier = Modifier.background(cardBackgroundColor)) {
+            Card(modifier = Modifier.background(cardBackgroundColor)
+                ,
+                colors = CardDefaults.cardColors(
+                    containerColor = cardBackgroundColor
+                )
+            ) {
                 IconButton(onClick = { onClickSave(jobState) }) {
                     Icon(
                         painter = painterResource(id = if (isJobSaved) R.drawable.marked_ic else R.drawable.not_marked_ic),
@@ -138,7 +146,12 @@ fun DetailsScreenContent(
                 }
             }
 
-            Card(modifier = Modifier.background(cardBackgroundColor)) {
+            Card(modifier = Modifier.background(cardBackgroundColor)
+            ,
+                colors = CardDefaults.cardColors(
+                    containerColor = cardBackgroundColor
+                )
+            ) {
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         painter = painterResource(id = R.drawable.share_ic),
@@ -163,12 +176,18 @@ fun DetailsScreenContent(
                     text = it,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
+                    fontFamily = Tajawal,
+                    color = textColor
                 )
             }
             Card(
                 modifier = Modifier
                     .background(cardBackgroundColor),
                 shape = RoundedCornerShape(8.dp)
+                ,
+                colors = CardDefaults.cardColors(
+                    containerColor = cardBackgroundColor
+                )
 
             ) {
                 jobState.category?.let {
@@ -207,10 +226,11 @@ fun DetailsScreenContent(
                 onClick = {}) {
                 Text(
                     modifier = Modifier.padding(4.dp),
-                    text = "Apply For Job",
+                    text = stringResource(R.string.apply_for_job),
                     fontWeight = FontWeight.Medium,
                     fontSize = 20.sp,
-                    color = textColor
+                    color = textColor,
+                    fontFamily = Tajawal
                 )
             }
             DetailsScreenTextView(
@@ -218,14 +238,14 @@ fun DetailsScreenContent(
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp
             )
-            DetailsScreenTextView(text = "Job Type: ", fontWeight = FontWeight.Light)
+            DetailsScreenTextView(text = stringResource(R.string.job_type), fontWeight = FontWeight.Light)
             jobState.job_type?.let {
                 DetailsScreenTextView(
                     text = it,
                     fontWeight = FontWeight.SemiBold
                 )
             }
-            DetailsScreenTextView(text = "Salary: ", fontWeight = FontWeight.Light)
+            DetailsScreenTextView(text = stringResource(R.string.salary), fontWeight = FontWeight.Light)
             jobState.salary?.let {
                 DetailsScreenTextView(
                     text = it,
@@ -238,7 +258,7 @@ fun DetailsScreenContent(
                 }
             }
             DetailsScreenTextView(
-                text = "Job Description ",
+                text = stringResource(R.string.job_description),
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp
             )

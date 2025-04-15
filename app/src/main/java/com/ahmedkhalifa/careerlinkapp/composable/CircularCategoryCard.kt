@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.ahmedkhalifa.careerlinkapp.models.Category
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppMainColor
+import com.ahmedkhalifa.careerlinkapp.ui.theme.Tajawal
 
 
 @Composable
@@ -46,6 +47,8 @@ fun CircularCategoryCard(category: Category) {
                 textAlign = TextAlign.Center,
                 fontSize = 28.sp,
                 color = textColor,
+                fontWeight = FontWeight.Bold,
+                fontFamily = Tajawal
             )
         }
 
@@ -55,6 +58,7 @@ fun CircularCategoryCard(category: Category) {
             text = category.name,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Medium,
+            fontFamily = Tajawal,
             fontSize = 12.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

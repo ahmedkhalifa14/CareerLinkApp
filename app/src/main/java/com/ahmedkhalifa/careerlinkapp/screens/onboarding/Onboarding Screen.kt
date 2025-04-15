@@ -44,12 +44,12 @@ fun OnboardingScreen(
     navController: NavController,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val isFirstTimeLaunch by viewModel.isFirstTimeLaunch.collectAsState()
+    val isFirstTimeLaunch by viewModel.isFirstTimeLaunch.collectAsState(initial = null)
     val updatedLaunchState = rememberUpdatedState(newValue = isFirstTimeLaunch)
 
     LaunchedEffect(updatedLaunchState.value) {
         Log.d("isFirstTime", "Updated Value: ${updatedLaunchState.value}")
-        if (updatedLaunchState.value) {
+        if (updatedLaunchState.value == true) {
             navController.navigate(Graph.AUTHENTICATION) {
                 popUpTo(AuthScreen.OnBoarding.route) {
                     inclusive = true

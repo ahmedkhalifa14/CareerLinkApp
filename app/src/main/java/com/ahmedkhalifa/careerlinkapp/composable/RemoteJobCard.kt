@@ -1,7 +1,8 @@
 package com.ahmedkhalifa.careerlinkapp.composable
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,19 +24,28 @@ import coil.compose.rememberAsyncImagePainter
 import com.ahmedkhalifa.careerlinkapp.R
 import com.ahmedkhalifa.careerlinkapp.models.Job
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
+import com.ahmedkhalifa.careerlinkapp.ui.theme.Tajawal
 import com.ahmedkhalifa.careerlinkapp.utils.getDefault
 import com.ahmedkhalifa.careerlinkapp.utils.truncate
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 
-fun RemoteJobCard(job: Job, onClick: () -> Unit) {
+fun RemoteJobCard(
+    job: Job,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit
+) {
     val cardBackgroundColor = getColor(AppColors.AppColorSet.AppCardBackgroundColor)
     val textColor = getColor(AppColors.AppColorSet.AppMainTextColor)
     val textSecondColor = getColor(AppColors.AppColorSet.AppSecondTextColor)
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }, colors = CardDefaults.cardColors(
+            .combinedClickable(
+                onClick = { onClick() },
+                onLongClick = { onLongClick() }
+            ), colors = CardDefaults.cardColors(
             containerColor = cardBackgroundColor
         )
     )
@@ -60,11 +70,17 @@ fun RemoteJobCard(job: Job, onClick: () -> Unit) {
                     Text(
                         it,
                         fontWeight = FontWeight.Bold,
+                        fontFamily = Tajawal,
                         maxLines = 1,
                         color = textColor
                     )
                 }
-                job.job_type?.let { Text(it.truncate(20), color = textSecondColor) }
+                job.job_type?.let {
+                    Text(
+                        it.truncate(20), color = textSecondColor, fontWeight = FontWeight.Normal,
+                        fontFamily = Tajawal
+                    )
+                }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
                         painter = painterResource(id = R.drawable.dollar_money_sign_icon), // Replace with your money icon
@@ -72,7 +88,13 @@ fun RemoteJobCard(job: Job, onClick: () -> Unit) {
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(job.salary.getDefault(), maxLines = 1, color = textSecondColor)
+                    Text(
+                        job.salary.getDefault(),
+                        maxLines = 1,
+                        color = textSecondColor,
+                        fontWeight = FontWeight.Normal,
+                        fontFamily = Tajawal
+                    )
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
@@ -81,7 +103,11 @@ fun RemoteJobCard(job: Job, onClick: () -> Unit) {
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(job.location?.truncate(20).getDefault(), color = textSecondColor)
+                    Text(
+                        job.location?.truncate(20).getDefault(), color = textSecondColor,
+                        fontWeight = FontWeight.Normal,
+                        fontFamily = Tajawal
+                    )
                 }
             }
         }

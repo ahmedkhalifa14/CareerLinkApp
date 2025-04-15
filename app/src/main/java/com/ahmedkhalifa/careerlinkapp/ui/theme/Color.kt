@@ -12,6 +12,6 @@ val Pink40 = Color(0xFF7D5260)
 val AppMainColor = Color(0xFF1A887B)
 val FacebookIconColor = Color(0xFF1877F2)
 val GoogleIconColor = Color(0xFFD5EEC7)
-val AppCardLightBackgroundColor = Color(0xFFfdfefe)
-val AppCardDarkBackgroundColor = Color(0xFF17202A)
+val AppCardLightBackgroundColor = Color(0xFFEAEFEF)
+val AppCardDarkBackgroundColor = Color(0xFF1E1E21)
 

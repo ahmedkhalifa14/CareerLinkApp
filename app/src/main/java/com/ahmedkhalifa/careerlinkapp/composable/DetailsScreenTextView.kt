@@ -7,6 +7,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
+import com.ahmedkhalifa.careerlinkapp.ui.theme.Tajawal
 
 @Composable
 
@@ -21,6 +22,6 @@ fun DetailsScreenTextView(
         text = text,
         color = textColor,
         fontSize = fontSize,
-        fontWeight = fontWeight
+        fontWeight = fontWeight, fontFamily = Tajawal
     )
 }

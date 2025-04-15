@@ -28,7 +28,7 @@ fun TopBar() {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = { }) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_menu),
                 contentDescription = "Menu",
@@ -37,7 +37,7 @@ fun TopBar() {
         }
 
         Image(
-            painter = painterResource(id = R.drawable.profile_pic),
+            painter = painterResource(id = R.drawable.profile_filled_icon),
             contentDescription = "Profile",
             modifier = Modifier
                 .size(40.dp)

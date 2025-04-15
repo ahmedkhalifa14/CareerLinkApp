@@ -105,6 +105,7 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.55")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
+
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
 
     implementation("androidx.datastore:datastore-preferences:1.0.0")
@@ -121,6 +122,12 @@ dependencies {
     kapt ("androidx.room:room-compiler:2.6.1")
     // Kotlin Extensions and Coroutines support for Room
     implementation ("androidx.room:room-ktx:2.6.1")
+    // work manager
+    implementation (libs.androidx.work.runtime.ktx)
+
+        implementation ("androidx.compose.material3:material3:1.0.0")
+
+
 
 
 }

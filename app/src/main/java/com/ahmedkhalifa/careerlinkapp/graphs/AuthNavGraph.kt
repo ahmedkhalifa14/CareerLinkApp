@@ -8,6 +8,7 @@ import com.ahmedkhalifa.careerlinkapp.ScreenContent
 import com.ahmedkhalifa.careerlinkapp.screens.login.LoginScreen
 import com.ahmedkhalifa.careerlinkapp.screens.onboarding.OnboardingScreen
 import com.ahmedkhalifa.careerlinkapp.screens.register.RegisterScreen
+import com.ahmedkhalifa.careerlinkapp.screens.register.UserFormScreen
 
 
 fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
@@ -39,6 +40,9 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
         composable(route=AuthScreen.OnBoarding.route) {
             OnboardingScreen(navController = navController)
         }
+        composable(route= AuthScreen.UserForm.route) {
+            UserFormScreen(navController)
+        }
     }
 }
 
@@ -47,4 +51,5 @@ sealed class AuthScreen(val route: String) {
     data object Login : AuthScreen(route = "LOGIN")
     data object SignUp : AuthScreen(route = "SIGN_UP")
     data object Forgot : AuthScreen(route = "FORGOT")
+    data object UserForm : AuthScreen(route = "USER_FORM")
 }

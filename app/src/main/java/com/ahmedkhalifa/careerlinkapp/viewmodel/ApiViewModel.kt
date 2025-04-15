@@ -50,7 +50,6 @@ class ApiViewModel @Inject constructor(private val mainRepo: ApiRepo) : ViewMode
             getRemoteJobs(currentLimit)
             lastRequestTime = currentTime
         } else {
-            // Optionally, show a message to the user that they are refreshing too quickly.
             Log.d("ApiViewModel", "Request blocked due to rate limiting.")
         }
     }
@@ -62,10 +61,10 @@ class ApiViewModel @Inject constructor(private val mainRepo: ApiRepo) : ViewMode
         MutableStateFlow<Event<Resource<ParentJob<Job>>>>(Event(Resource.Init()))
     val searchJobsState: MutableStateFlow<Event<Resource<ParentJob<Job>>>> = _searchJobsState
 
-    fun searchForJobs(page: Int, searchKeyword: String?) {
+    fun searchForJobs(limit: Int, searchKeyword: String?) {
         viewModelScope.launch {
             _searchJobsState.emit(Event(Resource.Loading()))
-            val result = mainRepo.searchForJobs(page, searchKeyword)
+            val result = mainRepo.searchForJobs(limit, searchKeyword)
             _searchJobsState.emit(Event(result))
         }
 

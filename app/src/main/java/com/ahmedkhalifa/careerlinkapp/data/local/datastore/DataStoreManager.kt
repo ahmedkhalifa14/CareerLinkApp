@@ -34,7 +34,7 @@ class DataStoreManager @Inject constructor(private val context: Context) {
                     "DataStoreManager",
                     "Preferences Data: $it"
                 )
-            } // Log all stored preferences
+            }
             .map { preferences ->
                 val value = preferences[booleanPreferencesKey(key)] ?: defaultValue
                 Log.d("DataStoreManager", "Key: $key | Emitted Value: $value")

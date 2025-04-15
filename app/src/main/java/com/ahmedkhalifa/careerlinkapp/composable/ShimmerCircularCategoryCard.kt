@@ -27,13 +27,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
 
 @Composable
 fun ShimmerCircularCategoryCard() {
+    val shimmerColor = getColor(AppColors.AppColorSet.AppCardBackgroundColor)
     val shimmerColors = listOf(
-        Color.LightGray.copy(alpha = 0.6f),
-        Color.LightGray.copy(alpha = 0.2f),
-        Color.LightGray.copy(alpha = 0.6f),
+        shimmerColor.copy(alpha = 0.6f),
+        shimmerColor.copy(alpha = 0.2f),
+        shimmerColor.copy(alpha = 0.6f),
     )
 
     val transition = rememberInfiniteTransition(label = "")

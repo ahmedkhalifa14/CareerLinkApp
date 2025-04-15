@@ -46,22 +46,25 @@ import com.ahmedkhalifa.careerlinkapp.ui.theme.GoogleIconColor
 import com.ahmedkhalifa.careerlinkapp.utils.Event
 import com.ahmedkhalifa.careerlinkapp.utils.Resource
 import com.ahmedkhalifa.careerlinkapp.viewmodel.AuthViewModel
+import com.ahmedkhalifa.careerlinkapp.viewmodel.SettingsViewModel
 
 @Composable
 fun LoginScreen(
     navController: NavController,
-    viewModel: AuthViewModel = hiltViewModel()
+    viewModel: AuthViewModel = hiltViewModel(),
+    settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val loginState = viewModel.loginState.collectAsState()
+    val loginState = viewModel.loginState.collectAsState(initial = null)
     val context = LocalContext.current
     LaunchedEffect(loginState.value) {
-        loginState.value.getContentIfNotHandled()?.let { resource ->
+        loginState.value?.getContentIfNotHandled()?.let { resource ->
             when (resource) {
                 is Resource.Success -> {
+                    settingsViewModel.setUserLogin(true)
                     navController.navigate(Graph.HOME)
                     Toast.makeText(
                         context,
-                        "Login successful",
+                        context.getString(R.string.login_successful),
                         Toast.LENGTH_SHORT
                     ).show()
 
@@ -75,15 +78,17 @@ fun LoginScreen(
             }
         }
     }
-    LoginScreenContent(
+    loginState.value?.let {
+        LoginScreenContent(
         onForgetClick = { },
         onClickGoogleAuth = {},
         onClickFacebookAuth = {},
         onClickLogin = { email, password ->
             viewModel.login(email, password)
         },
-        loginState = loginState.value
+        loginState = it
     )
+    }
 
 }
 
@@ -218,7 +223,7 @@ fun LoginScreenContent(
 
             is Resource.Error -> {
                 Text(
-                    text = resource.message ?: "An error occurred",
+                    text = resource.message ?: stringResource(R.string.an_error_occurred),
                     color = Color.Red,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )

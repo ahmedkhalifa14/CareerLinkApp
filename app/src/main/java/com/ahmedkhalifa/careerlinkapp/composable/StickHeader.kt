@@ -8,9 +8,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.ahmedkhalifa.careerlinkapp.R
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
+import com.ahmedkhalifa.careerlinkapp.ui.theme.Tajawal
 
 @Composable
 fun StickyHeader(title: String) {
@@ -23,7 +26,16 @@ fun StickyHeader(title: String) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(title, fontWeight = FontWeight.Bold, fontSize = 18.sp, color = textColor)
-        Text("Show All", color = textColor)
+        Text(
+            title,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
+            color = textColor,
+            fontFamily = Tajawal
+        )
+        Text(
+            stringResource(R.string.show_all), color = textColor,
+            fontSize = 14.sp, fontFamily = Tajawal, fontWeight = FontWeight.Medium
+        )
     }
 }

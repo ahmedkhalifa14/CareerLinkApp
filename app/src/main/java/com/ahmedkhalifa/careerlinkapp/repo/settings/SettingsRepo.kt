@@ -9,5 +9,4 @@ interface SettingsRepo {
     fun isUserLoggedIn(): Flow<Boolean>
     suspend fun setFirstTimeLaunch(isFirstTimeLaunch: Boolean)
     fun isFirstTimeLaunch(): Flow<Boolean>
-
 }

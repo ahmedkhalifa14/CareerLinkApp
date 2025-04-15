@@ -1,5 +1,7 @@
 package com.ahmedkhalifa.careerlinkapp.graphs
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -7,12 +9,13 @@ import androidx.navigation.compose.composable
 import com.ahmedkhalifa.careerlinkapp.screens.SplashScreen
 import com.ahmedkhalifa.careerlinkapp.screens.home.HomeScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun RootNavigationGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         route = Graph.ROOT,
-        startDestination = Graph.HOME
+        startDestination = Graph.SPLASH
     ) {
         composable(route=Graph.SPLASH){
             SplashScreen(navController = navController)
@@ -21,6 +24,7 @@ fun RootNavigationGraph(navController: NavHostController) {
         composable(route = Graph.HOME) {
             HomeScreen()
         }
+        profileNavGraph(navController)
     }
 }
 
@@ -30,4 +34,5 @@ object Graph {
     const val HOME = "home_graph"
     const val DETAILS = "details_graph"
     const val SPLASH = "splash"
+    const val PROFILE = "profile_graph"
 }

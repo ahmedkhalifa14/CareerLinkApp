@@ -10,13 +10,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ahmedkhalifa.careerlinkapp.R
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
+import com.ahmedkhalifa.careerlinkapp.ui.theme.Tajawal
 
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -29,10 +33,12 @@ fun SkillsAndToolsCard(
     val backgroundColor = getColor(AppColors.AppColorSet.AppScreenBackgroundColor)
     val textColor = getColor(AppColors.AppColorSet.AppMainTextColor)
 
-    Card {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = cardBackgroundColor)
+    ) {
         Column(modifier = Modifier.background(backgroundColor)) {
             Text(
-                text = "Skills and Tools:",
+                text = stringResource(R.string.skills_and_tools),
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 8.dp),
                 fontSize = 20.sp,
@@ -56,6 +62,7 @@ fun SkillsAndToolsCard(
                             text = skill,
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                             fontWeight = FontWeight.SemiBold,
+                            fontFamily = Tajawal,
                             color = textColor
                         )
                     }

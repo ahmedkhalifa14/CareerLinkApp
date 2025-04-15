@@ -27,61 +27,58 @@ import com.ahmedkhalifa.careerlinkapp.graphs.AuthScreen
 import com.ahmedkhalifa.careerlinkapp.graphs.Graph
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppMainColor
 import com.ahmedkhalifa.careerlinkapp.viewmodel.SettingsViewModel
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun SplashScreen(
     navController: NavHostController,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
+
     val scale = remember { Animatable(0f) }
     val alpha = remember { Animatable(0f) }
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setSystemBarsColor(
-        color = AppMainColor
-    )
-    systemUiController.setStatusBarColor(
-        color = AppMainColor
-    )
 
-    val isFirstTimeLaunch by viewModel.isFirstTimeLaunch.collectAsState()
-    val isUserLoggedIn by viewModel.isUserLogin.collectAsState()
-    viewModel.isFirstTimeLaunch()
-    viewModel.isUserLogin()
+    val isFirstTimeLaunch by viewModel.isFirstTimeLaunch.collectAsState(initial = null)
+    val isUserLoggedIn by viewModel.isUserLogin.collectAsState(initial = null)
+    viewModel.checkFirstTimeLaunch()
+    viewModel.checkUserLogin()
 
-    LaunchedEffect(isFirstTimeLaunch) {
-        scale.animateTo(
-            targetValue = 0.9f, animationSpec = tween(
-                durationMillis = 800, easing = overshootEasing(8f)
+    LaunchedEffect(isFirstTimeLaunch, isUserLoggedIn) {
+        if (isFirstTimeLaunch != null && isUserLoggedIn != null) {
+            scale.animateTo(
+                targetValue = 0.9f, animationSpec = tween(
+                    durationMillis = 800, easing = overshootEasing(8f)
+                )
             )
-        )
-        alpha.animateTo(
-            targetValue = 1f, animationSpec = tween(
-                durationMillis = 1200
+            alpha.animateTo(
+                targetValue = 1f, animationSpec = tween(
+                    durationMillis = 1200
+                )
             )
-        )
-        kotlinx.coroutines.delay(2000)
-        when {
-            isFirstTimeLaunch -> {
-                navController.navigate(Graph.AUTHENTICATION) {
-                    popUpTo(Graph.SPLASH) { inclusive = true }
-                }
-            }
-
-            isUserLoggedIn -> {
-                navController.navigate(Graph.HOME) {
-                    popUpTo(Graph.SPLASH) { inclusive = true }
-                }
-            }
-
-            else -> {
-                navController.navigate(AuthScreen.OnBoarding.route) {
-                    popUpTo(Graph.SPLASH) { inclusive = true }
+            kotlinx.coroutines.delay(2000)
+            when {
+                !isFirstTimeLaunch!! -> {
+                    navController.navigate(AuthScreen.OnBoarding.route) {
+                        popUpTo(Graph.SPLASH) { inclusive = true }
+                    }
                 }
 
+                !isUserLoggedIn!! -> {
 
+                    navController.navigate(Graph.AUTHENTICATION) {
+                        popUpTo(Graph.SPLASH) { inclusive = true }
+                    }
+                }
+
+                else -> {
+                    navController.navigate(Graph.HOME) {
+                        popUpTo(Graph.SPLASH) { inclusive = true }
+                    }
+
+
+                }
             }
         }
+
     }
 
     Box(
@@ -102,7 +99,6 @@ fun SplashScreen(
     }
 }
 
-// OvershootInterpolator (for animation)
 private class OvershootInterpolator(private val tension: Float) : Easing {
     override fun transform(fraction: Float): Float {
         val t = fraction * 2f - 1f

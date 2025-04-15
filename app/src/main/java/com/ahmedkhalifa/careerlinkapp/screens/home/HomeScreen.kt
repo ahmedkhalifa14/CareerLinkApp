@@ -25,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -35,6 +36,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ahmedkhalifa.careerlinkapp.BottomBarScreen
 import com.ahmedkhalifa.careerlinkapp.composable.getColor
 import com.ahmedkhalifa.careerlinkapp.graphs.HomeNavGraph
+import com.ahmedkhalifa.careerlinkapp.graphs.ProfileGraph
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -70,7 +72,11 @@ fun BottomBar(navController: NavHostController, isVisible: Boolean) {
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    val bottomBarDestination = screens.any { it.route == currentDestination?.route }
+    val bottomBarDestination = screens.any {
+        it.route == currentDestination?.route || currentDestination?.route?.startsWith(
+            ProfileGraph.Profile.route
+        ) == true
+    }
 
     // Use AnimatedVisibility to control bottom bar visibility
     AnimatedVisibility(
@@ -105,7 +111,7 @@ fun RowScope.AddItem(
     val textColor = getColor(AppColors.AppColorSet.AppMainTextColor)
     BottomNavigationItem(
         label = {
-            Text(text = screen.title, color = textColor)
+            Text(text = stringResource(screen.title), color = textColor)
         },
         icon = {
             Icon(

@@ -1,6 +1,5 @@
 package com.ahmedkhalifa.careerlinkapp.graphs
 
-import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.lazy.LazyListState
@@ -18,25 +17,22 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.ahmedkhalifa.careerlinkapp.BottomBarScreen
-import com.ahmedkhalifa.careerlinkapp.ScreenContent
 import com.ahmedkhalifa.careerlinkapp.models.Job
+import com.ahmedkhalifa.careerlinkapp.screens.JobSearchScreen
 import com.ahmedkhalifa.careerlinkapp.screens.details.DetailsScreen
 import com.ahmedkhalifa.careerlinkapp.screens.home.HomePage
-import com.ahmedkhalifa.careerlinkapp.screens.profile.ProfileScreen
-import kotlinx.serialization.encodeToString
+import com.ahmedkhalifa.careerlinkapp.screens.settings.SettingsScreen
 import kotlinx.serialization.json.Json
 
 
 sealed class DetailsScreen(val route: String) {
-    object Information : DetailsScreen("information")
+    data object Information : DetailsScreen("information")
 }
 
-object Information : DetailsScreen("information/{jobJson}") {
-    fun createRoute(job: Job): String {
-        val encodedJob = Uri.encode(Json.encodeToString(job))
-        return "information/$encodedJob"
-    }
+sealed class SearchScreen(val route: String) {
+    data object Search : SearchScreen("search")
 }
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -53,16 +49,14 @@ fun HomeNavGraph(navController: NavHostController, listState: LazyListState) {
                 isScrollingDown = rememberScrollDirection(listState) // Pass scroll state
             )
         }
-        composable(route = BottomBarScreen.Profile.route) {
-            ProfileScreen()
-        }
+        profileNavGraph(navController)
         composable(route = BottomBarScreen.Settings.route) {
-            ScreenContent(
-                name = BottomBarScreen.Settings.route,
-                onClick = { }
-            )
+            SettingsScreen()
         }
         detailsNavGraph(navController = navController)
+        composable(SearchScreen.Search.route) {
+            JobSearchScreen(navController=navController)
+        }
     }
 }
 
@@ -79,12 +73,11 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
         ) { backStackEntry ->
             val jobJson = backStackEntry.arguments?.getString("jobJson")
             val job = jobJson?.let { Json.decodeFromString<Job>(it) }
-
-            // Pass the job data to the DetailsScreen
             DetailsScreen(navController = navController, job = job)
         }
     }
 }
+
 
 // Scroll direction detection
 @Composable

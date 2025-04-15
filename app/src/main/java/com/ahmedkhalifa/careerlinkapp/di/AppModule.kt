@@ -24,6 +24,7 @@ object AppModule {
             JobRoomDatabase::class.java,
             "job_database")
             .setJournalMode(RoomDatabase.JournalMode.TRUNCATE)
+            .fallbackToDestructiveMigration()
             .build()
     }
     @Provides

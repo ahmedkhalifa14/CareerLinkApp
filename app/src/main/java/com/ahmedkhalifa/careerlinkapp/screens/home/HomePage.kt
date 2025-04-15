@@ -27,15 +27,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.ahmedkhalifa.careerlinkapp.R
 import com.ahmedkhalifa.careerlinkapp.composable.JobCategoriesSection
 import com.ahmedkhalifa.careerlinkapp.composable.RemoteJobsSection
 import com.ahmedkhalifa.careerlinkapp.composable.SearchBar
 import com.ahmedkhalifa.careerlinkapp.composable.StickyHeader
 import com.ahmedkhalifa.careerlinkapp.composable.TopBar
 import com.ahmedkhalifa.careerlinkapp.composable.getColor
+import com.ahmedkhalifa.careerlinkapp.graphs.SearchScreen
 import com.ahmedkhalifa.careerlinkapp.models.Category
 import com.ahmedkhalifa.careerlinkapp.models.Job
 import com.ahmedkhalifa.careerlinkapp.models.ParentJob
@@ -73,7 +76,10 @@ fun HomePage(
             navigationController!!.navigate("information/$jobJson")
         },
         listState = listState,
-        isScrollingDown = isScrollingDown
+        isScrollingDown = isScrollingDown,
+        onSearchClick = {
+            navigationController!!.navigate(SearchScreen.Search.route)
+        }
     )
 }
 
@@ -87,7 +93,8 @@ fun HomePageContent(
     refreshJobs: () -> Unit,
     onRemoteJobCardClick: (Job) -> Unit = {},
     listState: LazyListState,
-    isScrollingDown: Boolean
+    isScrollingDown: Boolean,
+    onSearchClick: () -> Unit,
 ) {
     val screenBackgroundColor = getColor(AppColors.AppColorSet.AppScreenBackgroundColor)
     val refreshing = remember { mutableStateOf(false) } // Manage refreshing state
@@ -105,7 +112,7 @@ fun HomePageContent(
         ) {
             TopBar()
             LazyColumn(
-                state = listState,  // Set the state of LazyColumn to track the scroll
+                state = listState,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
@@ -113,11 +120,11 @@ fun HomePageContent(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 stickyHeader {
-                    SearchBar()
+                    SearchBar(false,{},"",onSearchClick)
                     Spacer(modifier = Modifier.height(16.dp))
                 }
                 stickyHeader {
-                    StickyHeader(title = "Categories")
+                    StickyHeader(title = stringResource(R.string.categories))
                 }
                 item {
                     LazyRow(
@@ -135,7 +142,7 @@ fun HomePageContent(
                 }
 
                 stickyHeader {
-                    StickyHeader(title = "Recent Jobs")
+                    StickyHeader(title = stringResource(R.string.recent_jobs))
                 }
                 item {
                     RemoteJobsSection(
