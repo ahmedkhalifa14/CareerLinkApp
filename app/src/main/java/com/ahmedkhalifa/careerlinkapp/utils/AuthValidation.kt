@@ -1,7 +1,8 @@
-package com.ahmedkhalifa.careerlinkapp
+package com.ahmedkhalifa.careerlinkapp.utils
 
 import android.content.Context
 import android.util.Patterns
+import com.ahmedkhalifa.careerlinkapp.R
 import com.google.android.material.textfield.TextInputLayout
 import java.util.regex.Matcher
 import java.util.regex.Pattern

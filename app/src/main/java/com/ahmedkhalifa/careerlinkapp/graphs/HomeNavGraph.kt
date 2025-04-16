@@ -16,22 +16,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.ahmedkhalifa.careerlinkapp.BottomBarScreen
 import com.ahmedkhalifa.careerlinkapp.models.Job
 import com.ahmedkhalifa.careerlinkapp.screens.JobSearchScreen
 import com.ahmedkhalifa.careerlinkapp.screens.details.DetailsScreen
+import com.ahmedkhalifa.careerlinkapp.screens.home.BottomBarScreen
 import com.ahmedkhalifa.careerlinkapp.screens.home.HomePage
 import com.ahmedkhalifa.careerlinkapp.screens.settings.SettingsScreen
 import kotlinx.serialization.json.Json
-
-
-sealed class DetailsScreen(val route: String) {
-    data object Information : DetailsScreen("information")
-}
-
-sealed class SearchScreen(val route: String) {
-    data object Search : SearchScreen("search")
-}
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -99,4 +90,12 @@ fun rememberScrollDirection(listState: LazyListState): Boolean {
             isScrollingDown
         }
     }.value
+}
+
+sealed class DetailsScreen(val route: String) {
+    data object Information : DetailsScreen("information")
+}
+
+sealed class SearchScreen(val route: String) {
+    data object Search : SearchScreen("search")
 }

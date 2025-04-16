@@ -77,5 +77,6 @@
     <string name="me">Me</string>
     <string name="complete_your_profile">Complete Your Profile</string>
     <string name="upload_image">Upload Image</string>
+    <string name="please_fill_all_fields">Please fill all fields</string>
 
 </resources>

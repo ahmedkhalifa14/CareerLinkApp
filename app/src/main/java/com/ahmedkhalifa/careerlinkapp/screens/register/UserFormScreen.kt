@@ -1,6 +1,9 @@
 package com.ahmedkhalifa.careerlinkapp.screens.register
 
+import android.Manifest
+import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -41,8 +44,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.ahmedkhalifa.careerlinkapp.R
+import com.ahmedkhalifa.careerlinkapp.composable.CropImageDialog
 import com.ahmedkhalifa.careerlinkapp.composable.CustomBtn
 import com.ahmedkhalifa.careerlinkapp.composable.CustomTextField
 import com.ahmedkhalifa.careerlinkapp.composable.ProfileAvatarView
@@ -52,26 +57,63 @@ import com.ahmedkhalifa.careerlinkapp.graphs.AuthScreen
 import com.ahmedkhalifa.careerlinkapp.models.User
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
 import com.ahmedkhalifa.careerlinkapp.utils.EventObserver
+import com.ahmedkhalifa.careerlinkapp.utils.Resource
 import com.ahmedkhalifa.careerlinkapp.viewmodel.AuthViewModel
+import com.google.firebase.auth.FirebaseAuth
+import java.io.File
 import java.util.UUID
 
 @Composable
 fun UserFormScreen(
     navHostController: NavHostController,
+    backStackEntry: NavBackStackEntry,
     authViewModel: AuthViewModel = hiltViewModel(),
 ) {
-    val userState = authViewModel.saveUserDataState.collectAsState()
+    val registerState = authViewModel.registerState.collectAsState()
+    val saveUserState = authViewModel.saveUserDataState.collectAsState()
     val context = LocalContext.current
+
     var isLoading by remember { mutableStateOf(false) }
 
-    val eventObserver = EventObserver<Unit>(
+    val userEmail = backStackEntry.arguments?.getString("userEmail")
+    val userPassword = backStackEntry.arguments?.getString("userPassword")
+
+    var userFormData by remember { mutableStateOf<User?>(null) }
+
+    LaunchedEffect(registerState.value) {
+        registerState.value.getContentIfNotHandled()?.let { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    isLoading = true
+                }
+                is Resource.Success -> {
+                    isLoading =false
+                    Toast.makeText(context, "Register success", Toast.LENGTH_SHORT).show()
+                    val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+                    userFormData?.let { user ->
+                        val updatedUser = user.copy(userId = uid)
+                        authViewModel.saveUserData(updatedUser)
+                    }
+                }
+                is Resource.Error -> {
+                    isLoading = false
+                    Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
+                }
+                else -> {}
+            }
+        }
+    }
+
+    val saveUserProfileEventObserver = EventObserver<Unit>(
         onLoading = {
             isLoading = true
         },
         onSuccess = {
             isLoading = false
             Toast.makeText(context, "User data saved successfully", Toast.LENGTH_SHORT).show()
-            navHostController.navigate(AuthScreen.Login.route)
+            navHostController.navigate(AuthScreen.Login.route) {
+                popUpTo(AuthScreen.UserForm.route) { inclusive = true }
+            }
         },
         onError = { errorMessage ->
             isLoading = false
@@ -79,55 +121,57 @@ fun UserFormScreen(
         }
     )
 
-    LaunchedEffect(userState) {
-        eventObserver.emit(userState.value)
+    LaunchedEffect(saveUserState.value) {
+        saveUserProfileEventObserver.emit(saveUserState.value)
     }
 
     UserFormScreenContent(
         isLoading = isLoading,
         onSaveClick = { user ->
-            authViewModel.saveUserData(user)
-        }
+            userFormData = user
+            authViewModel.register(email = user.email, password = userPassword ?: "")
+        },
+        userEmail = userEmail ?: "",
     )
 }
+
 
 @Composable
 fun UserFormScreenContent(
     isLoading: Boolean,
     onSaveClick: (User) -> Unit,
-) {
+    userEmail: String = "",
+)  {
     var firstName by rememberSaveable { mutableStateOf("") }
     var lastName by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
     var phoneNumber by rememberSaveable { mutableStateOf("") }
     var location by rememberSaveable { mutableStateOf("") }
     var profilePictureLink by rememberSaveable { mutableStateOf("") }
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+    var showCropper by remember { mutableStateOf(false) }
 
     val keyboardController = LocalSoftwareKeyboardController.current
-    val focusRequester1 = remember { FocusRequester() }
-    val focusRequester2 = remember { FocusRequester() }
-    val focusRequester3 = remember { FocusRequester() }
-    val focusRequester4 = remember { FocusRequester() }
-    val focusRequester5 = remember { FocusRequester() }
     val localContext = LocalContext.current
 
-    // State to handle if the image picker is triggered
-    val shouldLaunchImagePicker = remember { mutableStateOf(false) }
+    val firstNameFocusRequester = remember { FocusRequester() }
+    val lastnameFocusRequester = remember { FocusRequester() }
+    val phoneNumberFocusRequester = remember { FocusRequester() }
+    val locationFocusRequester = remember { FocusRequester() }
 
-    // Gallery launcher for picking image
+
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         uri?.let {
-            // Update profile picture link with the URI of the selected image
-            profilePictureLink = uri.toString()
-            Toast.makeText(localContext, "Image selected successfully", Toast.LENGTH_SHORT).show()
+            selectedImageUri = it
+            showCropper = true // Show cropping UI
         } ?: run {
             Toast.makeText(localContext, "No image selected", Toast.LENGTH_SHORT).show()
         }
     }
 
-    // Request permission to access the gallery before launching it
+    // Request permission to access the gallery
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -138,18 +182,27 @@ fun UserFormScreenContent(
         }
     }
 
-    // Handle permission request for READ_EXTERNAL_STORAGE
-    LaunchedEffect(shouldLaunchImagePicker.value) {
-        if (shouldLaunchImagePicker.value) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                // Android 13 and above, use READ_MEDIA_IMAGES
-                requestPermissionLauncher.launch(android.Manifest.permission.READ_MEDIA_IMAGES)
-            } else {
-                // For Android versions below 13, use READ_EXTERNAL_STORAGE
-                requestPermissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+    // Cropping UI
+    if (showCropper && selectedImageUri != null) {
+        CropImageDialog(
+            imageUri = selectedImageUri!!,
+            onCrop = { croppedBitmap ->
+                // Save cropped bitmap to file and update profilePictureLink
+                val croppedFile = File(localContext.cacheDir, "cropped_image_${System.currentTimeMillis()}.jpg")
+                croppedFile.outputStream().use { out ->
+                    croppedBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
+                }
+                profilePictureLink = Uri.fromFile(croppedFile).toString()
+                showCropper = false
+                selectedImageUri = null
+                Toast.makeText(localContext, "Image cropped successfully", Toast.LENGTH_SHORT).show()
+            },
+            onCancel = {
+                showCropper = false
+                selectedImageUri = null
+                Toast.makeText(localContext, "Cropping cancelled", Toast.LENGTH_SHORT).show()
             }
-            shouldLaunchImagePicker.value = false // Reset the state after launching the permission request
-        }
+        )
     }
 
     Column(
@@ -168,14 +221,20 @@ fun UserFormScreenContent(
 
         // Profile Picture view
         ProfileAvatarView(imageUrl = profilePictureLink, onClick = {
-            // Trigger the gallery launcher on click
-            shouldLaunchImagePicker.value = true // Set the state to launch the permission request
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requestPermissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
+            } else {
+                requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
         })
 
         Spacer(modifier = Modifier.height(8.dp))
         TextButton(text = stringResource(R.string.upload_image)) {
-            // Trigger the gallery launcher on upload image button click
-            shouldLaunchImagePicker.value = true // Set the state to launch the permission request
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requestPermissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
+            } else {
+                requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
         }
 
         // First Name Text Field
@@ -185,10 +244,12 @@ fun UserFormScreenContent(
             label = "First Name",
             placeholder = "Enter your first name",
             icon = Icons.Default.Person,
-            focusRequester = focusRequester1,
+            focusRequester = firstNameFocusRequester,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(
-                onNext = { focusRequester2.requestFocus() }
+                onNext = {
+                    lastnameFocusRequester.requestFocus()
+                }
             )
         )
 
@@ -199,27 +260,29 @@ fun UserFormScreenContent(
             label = "Last Name",
             placeholder = "Enter your last name",
             icon = Icons.Default.Person,
-            focusRequester = focusRequester2,
+            focusRequester = lastnameFocusRequester,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(
-                onNext = { focusRequester3.requestFocus() }
+                onNext = {
+                    phoneNumberFocusRequester.requestFocus()
+                }
             )
         )
 
         // Email Text Field
         CustomTextField(
-            value = email,
+            value = userEmail,
             onValueChange = { email = it },
             label = "Email",
             placeholder = "Enter your email",
             icon = Icons.Default.Email,
-            focusRequester = focusRequester3,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
             ),
             keyboardActions = KeyboardActions(
-                onNext = { focusRequester4.requestFocus() }
+                onNext = {
+                }
             )
         )
 
@@ -230,24 +293,25 @@ fun UserFormScreenContent(
             label = "Phone Number",
             placeholder = "Enter your phone number",
             icon = Icons.Default.Phone,
-            focusRequester = focusRequester4,
+            focusRequester = phoneNumberFocusRequester,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Phone,
                 imeAction = ImeAction.Next
             ),
             keyboardActions = KeyboardActions(
-                onNext = { focusRequester5.requestFocus() }
+                onNext = {
+                    locationFocusRequester.requestFocus()
+                }
             )
         )
 
-        // Location Text Field
         CustomTextField(
             value = location,
             onValueChange = { location = it },
             label = "Location",
             placeholder = "Enter your location",
             icon = Icons.Default.LocationOn,
-            focusRequester = focusRequester5,
+            focusRequester = locationFocusRequester,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
                 onDone = {
@@ -256,27 +320,21 @@ fun UserFormScreenContent(
             )
         )
 
-        // Show a loading spinner if `isLoading` is true
         if (isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
         }
 
-        // Save Button
         CustomBtn(
             text = stringResource(R.string.save),
             onClick = {
-                if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || location.isEmpty()) {
-                    Toast.makeText(
-                        localContext,
-                        "Please fill all fields",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                if (firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty() || location.isEmpty()) {
+                    Toast.makeText(localContext, "Please fill all fields", Toast.LENGTH_SHORT).show()
                 } else {
                     onSaveClick(
                         User(
                             firstName = firstName,
                             lastName = lastName,
-                            email = email,
+                            email = userEmail,
                             phoneNumber = phoneNumber,
                             location = location,
                             profilePictureLink = profilePictureLink,
@@ -285,8 +343,10 @@ fun UserFormScreenContent(
                         )
                     )
                 }
-            },
+            }
         )
     }
 }
+
+
 

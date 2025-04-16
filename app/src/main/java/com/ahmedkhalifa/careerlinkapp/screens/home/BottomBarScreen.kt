@@ -1,4 +1,4 @@
-package com.ahmedkhalifa.careerlinkapp
+package com.ahmedkhalifa.careerlinkapp.screens.home
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.ahmedkhalifa.careerlinkapp.R
 import com.ahmedkhalifa.careerlinkapp.graphs.Graph
 
 sealed class BottomBarScreen(
@@ -13,7 +14,7 @@ sealed class BottomBarScreen(
    @StringRes val title: Int,
     val icon: ImageVector
 ){
-    data object Home:BottomBarScreen(
+    data object Home: BottomBarScreen(
         route = "Home",
         title = R.string.home,
         icon = Icons.Default.Home

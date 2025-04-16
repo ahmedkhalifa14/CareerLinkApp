@@ -15,12 +15,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,7 +37,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.ahmedkhalifa.careerlinkapp.R
 import com.ahmedkhalifa.careerlinkapp.composable.CustomBtn
@@ -53,50 +49,23 @@ import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
 import com.ahmedkhalifa.careerlinkapp.ui.theme.FacebookIconColor
 import com.ahmedkhalifa.careerlinkapp.ui.theme.GoogleIconColor
 import com.ahmedkhalifa.careerlinkapp.ui.theme.Tajawal
-import com.ahmedkhalifa.careerlinkapp.utils.Event
-import com.ahmedkhalifa.careerlinkapp.utils.Resource
-import com.ahmedkhalifa.careerlinkapp.viewmodel.AuthViewModel
 
 
 @Composable
 fun RegisterScreen(
     navController: NavController,
-    viewModel: AuthViewModel = hiltViewModel()
 ) {
-    val state = viewModel.registerState.collectAsState()
     val context = LocalContext.current
-
-
-    LaunchedEffect(state.value) {
-
-        state.value.getContentIfNotHandled()?.let { resource ->
-            when (resource) {
-                is Resource.Success -> {
-                    navController.navigate(AuthScreen.Login.route)
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.successful_registration_please_verify_your_email_address),
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                }
-
-                is Resource.Error -> {
-                    Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
-                }
-
-                else -> {}
-            }
-        }
-    }
-
     RegisterScreenContent(
         onRegisterClick = { email, password ->
-            viewModel.register(email, password)
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(context, context.getString(R.string.please_fill_all_fields), Toast.LENGTH_SHORT).show()
+                return@RegisterScreenContent
+            }
+            navController.navigate(AuthScreen.UserForm.route + "/$email/$password")
         },
-        registerState = state.value,
         onClickLogin = {
-            navController.navigate(AuthScreen.UserForm.route)
+            navController.navigate(AuthScreen.Login.route)
         }
     )
 }
@@ -104,7 +73,6 @@ fun RegisterScreen(
 @Composable
 fun RegisterScreenContent(
     onRegisterClick: (String, String) -> Unit,
-    registerState: Event<Resource<Unit>>,
     onClickLogin: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
@@ -251,22 +219,6 @@ fun RegisterScreenContent(
             )
         }
 
-
-        when (val resource = registerState.peekContent()) {
-            is Resource.Loading -> {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-            }
-
-            is Resource.Error -> {
-                Text(
-                    text = resource.message ?: stringResource(R.string.an_error_occurred),
-                    color = Color.Red,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
-            }
-
-            else -> {}
-        }
     }
 }
 
@@ -275,7 +227,6 @@ fun RegisterScreenContent(
 fun PreviewRegisterScreen() {
     RegisterScreenContent(
         onRegisterClick = { _, _ -> },
-        registerState = Event(Resource.Init()),
         onClickLogin = {}
     )
 }

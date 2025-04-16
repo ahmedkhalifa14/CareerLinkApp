@@ -2,7 +2,9 @@ package com.ahmedkhalifa.careerlinkapp.graphs
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.ahmedkhalifa.careerlinkapp.ScreenContent
 import com.ahmedkhalifa.careerlinkapp.screens.login.LoginScreen
@@ -17,18 +19,6 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
         startDestination = AuthScreen.SignUp.route
     ) {
         composable(route = AuthScreen.Login.route) {
-//            LoginContent(
-//                onClick = {
-//                    navController.popBackStack()
-//                    navController.navigate(Graph.HOME)
-//                },
-//                onSignUpClick = {
-//                    navController.navigate(AuthScreen.SignUp.route)
-//                },
-//                onForgotClick = {
-//                    navController.navigate(AuthScreen.Forgot.route)
-//                }
-//            )
             LoginScreen(navController = navController)
         }
         composable(route = AuthScreen.SignUp.route) {
@@ -40,9 +30,16 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
         composable(route=AuthScreen.OnBoarding.route) {
             OnboardingScreen(navController = navController)
         }
-        composable(route= AuthScreen.UserForm.route) {
-            UserFormScreen(navController)
+        composable(
+            route = "USER_FORM/{userEmail}/{userPassword}",
+            arguments = listOf(
+                navArgument("userEmail") { type = NavType.StringType },
+                navArgument("userPassword") { type = NavType.StringType }
+            )
+        ) {
+            UserFormScreen(navController, it)
         }
+
     }
 }
 

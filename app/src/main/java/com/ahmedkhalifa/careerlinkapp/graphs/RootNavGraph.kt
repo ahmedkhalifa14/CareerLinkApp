@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.ahmedkhalifa.careerlinkapp.screens.SplashScreen
+import com.ahmedkhalifa.careerlinkapp.screens.onboarding.SplashScreen
 import com.ahmedkhalifa.careerlinkapp.screens.home.HomeScreen
 
 @RequiresApi(Build.VERSION_CODES.O)

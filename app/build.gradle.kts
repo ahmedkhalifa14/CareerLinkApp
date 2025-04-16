@@ -2,11 +2,11 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0" // this version matches your Kotlin version
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     id("com.google.gms.google-services")
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0" // this version matches your Kotlin version)
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0"
 }
 
 android {
@@ -126,6 +126,7 @@ dependencies {
     implementation (libs.androidx.work.runtime.ktx)
 
         implementation ("androidx.compose.material3:material3:1.0.0")
+    //implementation ("com.github.CanHub:android-image-cropper:4.5.0")
 
 
 
