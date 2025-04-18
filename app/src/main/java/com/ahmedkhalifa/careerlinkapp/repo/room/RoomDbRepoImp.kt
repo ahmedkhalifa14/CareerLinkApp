@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class RoomDbRepoImp @Inject constructor(
+class RoomDbRepoImpl @Inject constructor(
     private val jobDao: JobDao
 ) : RoomDbRepo {
     override suspend fun insertJob(job: Job): Resource<Long> =
@@ -27,7 +27,6 @@ class RoomDbRepoImp @Inject constructor(
             }
         }
 
-
     override suspend fun deleteJob(jobId: Int): Resource<Int> =
         withContext(Dispatchers.IO) {
             tryCatch {
@@ -44,16 +43,37 @@ class RoomDbRepoImp @Inject constructor(
             }
         }
 
-    override suspend fun doesJobExist(jobId: Int): Resource<Boolean> {
-        withContext(Dispatchers.IO){}
-        return tryCatch {
-            val result = jobDao.doesJobExist(jobId)
-            Resource.Success(result)
-        }    }
+    override suspend fun doesJobExist(jobId: Int): Resource<Boolean> =
+        withContext(Dispatchers.IO) {
+            tryCatch {
+                val result = jobDao.doesJobExist(jobId)
+                Resource.Success(result)
+            }
+        }
 
+    override suspend fun upsertJobs(jobs: List<Job>): Resource<Unit> =
+        withContext(Dispatchers.IO) {
+            tryCatch {
+                jobDao.upsertJobs(jobs)
+                Resource.Success(Unit)
+            }
+        }
+
+    override suspend fun getSavedJobs(): Resource<List<Job>> =
+        withContext(Dispatchers.IO) {
+            tryCatch {
+                val result = jobDao.getSavedJobs()
+                Resource.Success(result)
+            }
+        }
+
+    override suspend fun updateSavedStatus(jobId: Int, saved: Boolean): Resource<Unit> =
+        withContext(Dispatchers.IO) {
+            tryCatch {
+                jobDao.updateSavedStatus(jobId, saved)
+                Resource.Success(Unit)
+            }
+        }
 }
-
-
-
 
 

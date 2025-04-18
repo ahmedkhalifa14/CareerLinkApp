@@ -1,6 +1,7 @@
 package com.ahmedkhalifa.careerlinkapp.screens.details
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -61,7 +62,7 @@ fun DetailsScreen(
     val jobExistState = roomViewModel.isJobSavedState.collectAsState()
 
     LaunchedEffect(job?.id) {
-        job?.id?.let { roomViewModel.checkIfJobExists(it) }
+       // job?.id?.let { roomViewModel.checkIfJobExists(it) }
     }
     val isJobSaved = jobExistState.value.peekContent().data ?: false
 
@@ -71,11 +72,13 @@ fun DetailsScreen(
         onClickSave = { job ->
             if (isJobSaved){
                 job.id?.let { roomViewModel.deleteJob(it)
-                roomViewModel.checkIfJobExists(job.id)
+               // roomViewModel.checkIfJobExists(job.id)
+                    Log.d("SavedJob",job.saved.toString())
                 }
             }else{
+                Log.d("SavedJob",job.saved.toString())
                 roomViewModel.insertJob(job)
-                job.id?.let { roomViewModel.checkIfJobExists(it) }
+               // job.id?.let { roomViewModel.checkIfJobExists(it) }
             }
         }
         ,

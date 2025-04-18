@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.ahmedkhalifa.careerlinkapp.data.local.roomdb.JobRoomDatabase
+import com.ahmedkhalifa.careerlinkapp.helper.NetworkHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,4 +31,11 @@ object AppModule {
     @Provides
     @Singleton
     fun provideJobDao(jobRoomDatabase: JobRoomDatabase) = jobRoomDatabase.jobDao()
+
+    @Provides
+    @Singleton
+    fun provideNetworkHelper(@ApplicationContext context: Context): NetworkHelper {
+        return NetworkHelper(context)
+    }
+
 }

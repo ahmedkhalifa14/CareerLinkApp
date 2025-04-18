@@ -9,4 +9,7 @@ interface RoomDbRepo {
     suspend fun deleteJob(jobId: Int):Resource <Int>
     suspend fun deleteAllJobs(): Resource<Int>
     suspend fun doesJobExist(jobId: Int): Resource<Boolean>
+    suspend fun upsertJobs(jobs: List<Job>): Resource<Unit>
+    suspend fun getSavedJobs(): Resource<List<Job>>
+    suspend fun updateSavedStatus(jobId: Int, saved: Boolean): Resource<Unit>
 }

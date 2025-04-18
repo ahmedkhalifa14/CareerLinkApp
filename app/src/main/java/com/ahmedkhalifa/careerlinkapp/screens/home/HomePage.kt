@@ -59,7 +59,7 @@ fun HomePage(
     val remoteJobsState = apiViewModel.remoteJobsState.collectAsState()
     val remoteJobsCategoriesState = apiViewModel.remoteJobsCategoriesState.collectAsState()
 
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(true) {
         apiViewModel.getRemoteJobs(20)
         apiViewModel.getRemoteJobsCategories()
     }
@@ -73,15 +73,19 @@ fun HomePage(
         },
         onRemoteJobCardClick = { job ->
             val jobJson = Uri.encode(Json.encodeToString(job))
-            navigationController!!.navigate("information/$jobJson")
+            navigationController?.navigate("information/$jobJson")
         },
         listState = listState,
         isScrollingDown = isScrollingDown,
         onSearchClick = {
-            navigationController!!.navigate(SearchScreen.Search.route)
+            navigationController?.navigate(SearchScreen.Search.route)
+        },
+        onFavoriteClick = { job ->
+            apiViewModel.toggleSavedStatus(job.id!!, !job.saved)
         }
     )
 }
+
 
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
@@ -95,6 +99,7 @@ fun HomePageContent(
     listState: LazyListState,
     isScrollingDown: Boolean,
     onSearchClick: () -> Unit,
+    onFavoriteClick: (Job) -> Unit = {},
 ) {
     val screenBackgroundColor = getColor(AppColors.AppColorSet.AppScreenBackgroundColor)
     val refreshing = remember { mutableStateOf(false) } // Manage refreshing state
@@ -120,7 +125,7 @@ fun HomePageContent(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 stickyHeader {
-                    SearchBar(false,{},"",onSearchClick)
+                    SearchBar(false, {}, "", onSearchClick)
                     Spacer(modifier = Modifier.height(16.dp))
                 }
                 stickyHeader {
@@ -149,7 +154,11 @@ fun HomePageContent(
                         jobs = remoteJobsState.peekContent().data?.jobs,
                         isLoading = remoteJobsState.peekContent() is Resource.Loading,
                         errorMessage = (remoteJobsState.peekContent() as? Resource.Error)?.message,
-                        onJobClick = onRemoteJobCardClick
+                        onJobClick = onRemoteJobCardClick,
+                        onJobLongClick = {},
+                        onFavoriteClick = { job ->
+                            onFavoriteClick(job)
+                        }
                     )
                 }
             }

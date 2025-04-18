@@ -4,19 +4,46 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import com.ahmedkhalifa.careerlinkapp.models.Job
-
 
 @Dao
 interface JobDao {
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertJob(job: Job):Long
-    @Query("select * from job_table order by dateAdded asc")
+    suspend fun insertJob(job: Job): Long
+
+    @Query("SELECT * FROM job_table ORDER BY dateAdded DESC")
     suspend fun getAllJobs(): List<Job>
-    @Query("delete from job_table where id = :jobId")
+
+    @Query("SELECT * FROM job_table WHERE saved = 1 ORDER BY dateAdded DESC")
+    suspend fun getSavedJobs(): List<Job>
+
+    @Query("SELECT * FROM job_table")
+    suspend fun getAllJobsOnce(): List<Job>
+
+    @Query("UPDATE job_table SET saved = :saved WHERE id = :jobId")
+    suspend fun updateSavedStatus(jobId: Int, saved: Boolean)
+
+    @Query("DELETE FROM job_table WHERE id = :jobId")
     suspend fun deleteJob(jobId: Int): Int
-    @Query("delete from job_table")
+
+    @Query("DELETE FROM job_table")
     suspend fun deleteAllJobs(): Int
-    @Query("SELECT EXISTS(SELECT 1 FROM job_table WHERE id = :jobId LIMIT 1)")
+
+    @Query("SELECT EXISTS(SELECT 1 FROM job_table WHERE id = :jobId and saved=1 LIMIT 1)")
     suspend fun doesJobExist(jobId: Int): Boolean
+
+    @Transaction
+    suspend fun upsertJobs(jobs: List<Job>) {
+        val localJobs = getAllJobsOnce().associateBy { it.id }
+
+        val merged = jobs.map { remote ->
+            val local = localJobs[remote.id]
+            remote.copy(saved = local?.saved ?: false, dateAdded = System.currentTimeMillis())
+        }
+
+        merged.forEach { insertJob(it) }
+    }
 }
+

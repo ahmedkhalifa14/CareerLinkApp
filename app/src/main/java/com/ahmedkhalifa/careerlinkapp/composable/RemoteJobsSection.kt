@@ -1,3 +1,4 @@
+
 package com.ahmedkhalifa.careerlinkapp.composable
 
 import androidx.compose.foundation.layout.Column
@@ -19,27 +20,32 @@ fun RemoteJobsSection(
     errorMessage: String?,
     onJobClick: (Job) -> Unit,
     onJobLongClick: (Job) -> Unit = {},
+    onFavoriteClick: (Job) -> Unit,
 ) {
     Column(
         modifier = Modifier
     ) {
         if (isLoading) {
             repeat(5) { ShimmerRemoteJobCard() }
-        } else if (errorMessage != null) {
-
+        }
+        else if (errorMessage != null) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(stringResource(R.string.error_loading_jobs, errorMessage))
                 Spacer(modifier = Modifier.height(8.dp))
             }
-        } else if (jobs != null) {
-
+        }
+        else if (jobs != null) {
             jobs.forEach { job ->
-                RemoteJobCard(job = job, onClick = { onJobClick(job) },
-                    onLongClick = { onJobLongClick(job) })
+                RemoteJobCard(
+                    job = job,
+                    onClick = { onJobClick(job) },
+                    onLongClick = { onJobLongClick(job) },
+                    onFavoriteClick = { onFavoriteClick(job) },
+                )
                 Spacer(modifier = Modifier.height(8.dp))
             }
-        } else {
-
+        }
+        else {
             Text(stringResource(R.string.no_jobs_available))
         }
     }

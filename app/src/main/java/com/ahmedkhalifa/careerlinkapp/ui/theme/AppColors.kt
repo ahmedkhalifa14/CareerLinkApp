@@ -11,5 +11,6 @@ data class AppColors(val light: Color, val dark: Color) {
         val AppMainTextColor= AppColors(Color.Black, Color.White)
         val AppIconColor= AppColors(Color.Black, Color.White)
         val AppSecondTextColor= AppColors(Color.Gray, Color.LightGray)
+        val AppSavedColor= AppColors(Color.Red, Color.Red)
     }
 }
