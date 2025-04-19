@@ -17,9 +17,9 @@ import com.ahmedkhalifa.careerlinkapp.screens.profile.SavedJobsScreen
 fun NavGraphBuilder.profileNavGraph(navController: NavHostController) {
     navigation(
         route = Graph.PROFILE,
-        startDestination = ProfileGraph.Profile.route
+        startDestination = Graph.Routes.PROFILE
     ) {
-        composable(ProfileGraph.Profile.route) {
+        composable(Graph.Routes.PROFILE) {
             ProfileScreen(navController)
         }
         composable(ProfileGraph.EditProfile.route) {
@@ -39,7 +39,6 @@ fun NavGraphBuilder.profileNavGraph(navController: NavHostController) {
 }
 
 sealed class ProfileGraph(val route: String) {
-    data object Profile : ProfileGraph(route = "PROFILE_MAIN_SCREEN")
     data object EditProfile : ProfileGraph(route = "EDIT_PROFILE")
     data object Applications : ProfileGraph(route = "APPLICATIONS")
     data object Notifications : ProfileGraph(route = "NOTIFICATIONS")

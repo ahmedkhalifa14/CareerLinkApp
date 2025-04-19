@@ -78,5 +78,6 @@
     <string name="complete_your_profile">Complete Your Profile</string>
     <string name="upload_image">Upload Image</string>
     <string name="please_fill_all_fields">Please fill all fields</string>
+    <string name="no_saved_jobs">No saved jobs!</string>
 
 </resources>

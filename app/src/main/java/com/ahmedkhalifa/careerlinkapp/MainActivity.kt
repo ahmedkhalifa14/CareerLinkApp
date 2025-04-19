@@ -40,6 +40,7 @@ class MainActivity : ComponentActivity() {
 
         applyInitialTheme()
         setContent {
+            val navController = rememberNavController()
             val darkModeEnabled by settingsViewModel.darkModeEnabled.collectAsState(initial = null)
 
             LaunchedEffect(darkModeEnabled) {
@@ -65,7 +66,7 @@ class MainActivity : ComponentActivity() {
                         .background(com.ahmedkhalifa.careerlinkapp.composable.getColor(AppColors.AppColorSet.AppScreenBackgroundColor))
                         .padding(WindowInsets.statusBars.asPaddingValues()),
                 ) {
-                    RootNavigationGraph(navController = rememberNavController())
+                    RootNavigationGraph(navController =navController)
                 }
             }
         }

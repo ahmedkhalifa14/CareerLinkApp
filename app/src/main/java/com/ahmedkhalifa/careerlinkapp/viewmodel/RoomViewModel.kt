@@ -94,10 +94,8 @@ class RoomViewModel @Inject constructor(
         viewModelScope.launch {
             _updateJobState.emit(Event(Resource.Loading()))
             val result = roomDbRepo.updateSavedStatus(jobId, saved)
-            Log.d("TAG", "updateSavedStatus: $saved")
             _updateJobState.emit(Event(result))
-            getSavedJobs()
-            Log.d("TAG", "updateSavedStatus: $saved")
+            //getSavedJobs()
         }
     }
 

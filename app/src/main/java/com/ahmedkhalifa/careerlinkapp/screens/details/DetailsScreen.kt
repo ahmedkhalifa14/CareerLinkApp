@@ -1,7 +1,6 @@
 package com.ahmedkhalifa.careerlinkapp.screens.details
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,8 +24,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -59,27 +58,14 @@ fun DetailsScreen(
     job: Job?,
     roomViewModel: RoomViewModel = hiltViewModel()
 ) {
-    val jobExistState = roomViewModel.isJobSavedState.collectAsState()
-
-    LaunchedEffect(job?.id) {
-       // job?.id?.let { roomViewModel.checkIfJobExists(it) }
-    }
-    val isJobSaved = jobExistState.value.peekContent().data ?: false
-
+    val isJobSaved = remember { mutableStateOf(job!!.saved) }
     DetailsScreenContent(
         jobState = job,
-        isJobSaved = isJobSaved,
+        isJobSaved = isJobSaved.value,
         onClickSave = { job ->
-            if (isJobSaved){
-                job.id?.let { roomViewModel.deleteJob(it)
-               // roomViewModel.checkIfJobExists(job.id)
-                    Log.d("SavedJob",job.saved.toString())
-                }
-            }else{
-                Log.d("SavedJob",job.saved.toString())
-                roomViewModel.insertJob(job)
-               // job.id?.let { roomViewModel.checkIfJobExists(it) }
-            }
+            val newSavedState  = !isJobSaved.value
+            roomViewModel.updateSavedStatus(job.id!!,newSavedState )
+            isJobSaved.value= newSavedState
         }
         ,
         onClickApply = {
@@ -92,7 +78,7 @@ fun DetailsScreen(
 @Composable
 fun DetailsScreenContent(
     jobState: Job? = null,
-    isJobSaved: Boolean = false,
+    isJobSaved: Boolean = jobState!!.saved,
     onClickSave: (Job) -> Unit = {},
     onClickApply : (Job) -> Unit = {},
 ) {
@@ -155,7 +141,7 @@ fun DetailsScreenContent(
                     containerColor = cardBackgroundColor
                 )
             ) {
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = {}) {
                     Icon(
                         painter = painterResource(id = R.drawable.share_ic),
                         contentDescription = "Share"

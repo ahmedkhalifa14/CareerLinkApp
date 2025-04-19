@@ -1,8 +1,8 @@
 package com.ahmedkhalifa.careerlinkapp.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ahmedkhalifa.careerlinkapp.helper.NetworkHelper
 import com.ahmedkhalifa.careerlinkapp.models.ProfileUiState
 import com.ahmedkhalifa.careerlinkapp.models.User
 import com.ahmedkhalifa.careerlinkapp.repo.user.UserRepo
@@ -22,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val userRepo: UserRepo
+    private val userRepo: UserRepo,
+    private val networkHelper: NetworkHelper
 ) : ViewModel() {
 
     private val _userState = MutableStateFlow(ProfileUiState())
@@ -34,7 +35,6 @@ class ProfileViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             loadUserInfo()
-            Log.d("ProfileViewModel", "User Info: ${userState.value.user.firstName}")
         }
     }
 
@@ -80,6 +80,8 @@ class ProfileViewModel @Inject constructor(
 
     fun saveUserInformation() {
         viewModelScope.launch {
+            if (!networkHelper.isConnected())
+                _updateUserInfoState.emit(Event(Resource.Error("No internet connection")))
             _updateUserInfoState.emit(Event(Resource.Loading()))
             val result = userRepo.updateUserInfo(_userState.value.user)
             _updateUserInfoState.emit(Event(result))

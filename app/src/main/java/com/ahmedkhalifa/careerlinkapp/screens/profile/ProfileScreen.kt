@@ -1,5 +1,6 @@
 package com.ahmedkhalifa.careerlinkapp.screens.profile
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,19 +21,24 @@ import com.ahmedkhalifa.careerlinkapp.composable.Header
 import com.ahmedkhalifa.careerlinkapp.composable.ProfileCard
 import com.ahmedkhalifa.careerlinkapp.composable.SpacerVertical24
 import com.ahmedkhalifa.careerlinkapp.composable.getColor
+import com.ahmedkhalifa.careerlinkapp.graphs.Graph
 import com.ahmedkhalifa.careerlinkapp.graphs.ProfileGraph
 import com.ahmedkhalifa.careerlinkapp.models.User
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
+import com.ahmedkhalifa.careerlinkapp.viewmodel.AuthViewModel
 import com.ahmedkhalifa.careerlinkapp.viewmodel.ProfileViewModel
+import com.ahmedkhalifa.careerlinkapp.viewmodel.SettingsViewModel
 
 
 @Composable
 fun ProfileScreen(
     navController: NavController,
-    viewModel: ProfileViewModel = hiltViewModel()
-) {
-    val state = viewModel.userState.collectAsState()
+    profileViewModel: ProfileViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel = hiltViewModel(),
+    settingsViewModel: SettingsViewModel = hiltViewModel()
 
+) {
+    val state = profileViewModel.userState.collectAsState()
     ProfileScreenContent(
         state.value.user,
         onClickEditProfile = {
@@ -48,6 +54,23 @@ fun ProfileScreen(
             navController.navigate(ProfileGraph.SavedJobs.route)
         },
         onClickLogOut = {
+            authViewModel.logout()
+            settingsViewModel.setUserLogin(false)
+//            Log.d("NavDebug", "Current destination: ${navController.currentDestination?.route}")
+//
+            navController.navigate(Graph.AUTHENTICATION) {
+                popUpTo(Graph.HOME) {
+                    inclusive = true
+                }
+            }
+//            Log.d(
+//                "NavDebug",
+//                "Current destination after logout: ${navController.currentDestination?.route}"
+//            )
+            navController.addOnDestinationChangedListener { _, destination, _ ->
+                Log.d("NavDebug", "Current destination: ${destination.route}")
+            }
+
 
         }
 

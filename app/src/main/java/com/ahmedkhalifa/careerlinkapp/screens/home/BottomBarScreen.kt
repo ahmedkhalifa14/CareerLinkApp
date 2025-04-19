@@ -11,21 +11,23 @@ import com.ahmedkhalifa.careerlinkapp.graphs.Graph
 
 sealed class BottomBarScreen(
     val route: String,
-   @StringRes val title: Int,
+    @StringRes val title: Int,
     val icon: ImageVector
-){
-    data object Home: BottomBarScreen(
-        route = "Home",
+) {
+    data object Home : BottomBarScreen(
+        route = Graph.Routes.HOME,
         title = R.string.home,
         icon = Icons.Default.Home
     )
+
     data object Profile : BottomBarScreen(
-        route = Graph.PROFILE,
+        route = Graph.Routes.PROFILE,
         title = R.string.me,
         icon = Icons.Default.Person
     )
+
     data object Settings : BottomBarScreen(
-        route = "SETTINGS",
+        route = Graph.Routes.SETTINGS,
         title = R.string.settings,
         icon = Icons.Default.Settings
     )

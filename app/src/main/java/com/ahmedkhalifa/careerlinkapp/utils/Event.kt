@@ -18,11 +18,10 @@ class Event<out T>(private val content: T) {
 }
 
 class EventObserver<T>(
-       private inline val onError: ((String) -> Unit)? = null,
+    private inline val onError: ((String) -> Unit)? = null,
     private inline val onLoading: (() -> Unit)? = null,
     private inline val onSuccess: (T) -> Unit
 ) : FlowCollector<Event<Resource<T>>> {
-
 
     override suspend fun emit(value: Event<Resource<T>>) {
         when (val content = value.peekContent()) {

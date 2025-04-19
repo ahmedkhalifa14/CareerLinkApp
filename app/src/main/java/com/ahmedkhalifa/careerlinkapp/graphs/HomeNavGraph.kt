@@ -12,42 +12,29 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.ahmedkhalifa.careerlinkapp.models.Job
-import com.ahmedkhalifa.careerlinkapp.screens.JobSearchScreen
 import com.ahmedkhalifa.careerlinkapp.screens.details.DetailsScreen
-import com.ahmedkhalifa.careerlinkapp.screens.home.BottomBarScreen
-import com.ahmedkhalifa.careerlinkapp.screens.home.HomePage
+import com.ahmedkhalifa.careerlinkapp.screens.home.HomeScreen
 import com.ahmedkhalifa.careerlinkapp.screens.settings.SettingsScreen
 import kotlinx.serialization.json.Json
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun HomeNavGraph(navController: NavHostController, listState: LazyListState) {
-    NavHost(
-        navController = navController,
+fun NavGraphBuilder.homeNavGraph(navController: NavHostController) {
+    navigation(
         route = Graph.HOME,
-        startDestination = BottomBarScreen.Home.route
+        startDestination = Graph.Routes.HOME
     ) {
-        composable(route = BottomBarScreen.Home.route) {
-            HomePage(
-                navigationController = navController,
-                listState = listState,
-                isScrollingDown = rememberScrollDirection(listState) // Pass scroll state
-            )
+        composable(route = Graph.Routes.HOME) {
+            HomeScreen(navController)
+        }
+        composable(route = Graph.Routes.SETTINGS) {
+            SettingsScreen(navController)
         }
         profileNavGraph(navController)
-        composable(route = BottomBarScreen.Settings.route) {
-            SettingsScreen()
-        }
-        detailsNavGraph(navController = navController)
-        composable(SearchScreen.Search.route) {
-            JobSearchScreen(navController=navController)
-        }
     }
 }
 

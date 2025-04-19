@@ -22,4 +22,8 @@ class AuthRepoImpl @Inject constructor(
        firebaseService.saveUserInfo(user)
     }
 
+    override suspend fun logout() {
+        firebaseService.logoutUser()
+    }
+
 }

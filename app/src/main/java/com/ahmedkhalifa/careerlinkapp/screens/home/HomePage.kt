@@ -51,7 +51,7 @@ import kotlinx.serialization.json.Json
 
 @Composable
 fun HomePage(
-    navigationController: NavController? = null,
+    navigationController: NavController,
     apiViewModel: ApiViewModel = hiltViewModel(),
     listState: LazyListState,
     isScrollingDown: Boolean
@@ -73,12 +73,12 @@ fun HomePage(
         },
         onRemoteJobCardClick = { job ->
             val jobJson = Uri.encode(Json.encodeToString(job))
-            navigationController?.navigate("information/$jobJson")
+            navigationController.navigate("information/$jobJson")
         },
         listState = listState,
         isScrollingDown = isScrollingDown,
         onSearchClick = {
-            navigationController?.navigate(SearchScreen.Search.route)
+            navigationController.navigate(SearchScreen.Search.route)
         },
         onFavoriteClick = { job ->
             apiViewModel.toggleSavedStatus(job.id!!, !job.saved)

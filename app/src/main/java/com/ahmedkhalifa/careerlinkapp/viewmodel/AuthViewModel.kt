@@ -1,5 +1,6 @@
 package com.ahmedkhalifa.careerlinkapp.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ahmedkhalifa.careerlinkapp.models.User
@@ -63,6 +64,15 @@ class AuthViewModel @Inject constructor(
                 _saveUserDataState.value = Event(Resource.Success(Unit))
             } catch (e: Exception) {
                 _saveUserDataState.value = Event(Resource.Error(e.message ?: "An error occurred"))
+            }
+        }
+    }
+    fun logout() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                authRepo.logout()
+            } catch (e: Exception) {
+                Log.d("AuthViewModel", "logout: ${e.message}")
             }
         }
     }

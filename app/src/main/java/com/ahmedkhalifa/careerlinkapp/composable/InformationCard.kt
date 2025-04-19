@@ -24,11 +24,11 @@ fun InformationCard(
     title: String,
     info: String,
     onTextChange: (String) -> Unit,
-
     ) {
     val cardColor = getColor(AppColors.AppColorSet.AppCardBackgroundColor)
     val screenBackgroundColor = getColor(AppColors.AppColorSet.AppScreenBackgroundColor)
-    val textColor = getColor(AppColors.AppColorSet.AppSecondTextColor)
+    val textColor = getColor(AppColors.AppColorSet.AppMainTextColor)
+    val textSecondColor = getColor(AppColors.AppColorSet.AppSecondTextColor)
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -59,7 +59,7 @@ fun InformationCard(
                 onValueChange = onTextChange,
                 modifier = Modifier.fillMaxWidth(),
                 textStyle = LocalTextStyle.current.copy(
-                    color = textColor,
+                    color = textSecondColor,
                     fontSize = 14.sp,
                     fontFamily = Tajawal
                 ),

@@ -17,12 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.ahmedkhalifa.careerlinkapp.R
 import com.ahmedkhalifa.careerlinkapp.composable.SettingsItem
 import com.ahmedkhalifa.careerlinkapp.viewmodel.SettingsViewModel
 
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
+fun SettingsScreen(navController: NavController,viewModel: SettingsViewModel = hiltViewModel()) {
     val darkModeEnabled by viewModel.darkModeEnabled.collectAsState(initial = null)
     LaunchedEffect(darkModeEnabled) {
         darkModeEnabled.let {

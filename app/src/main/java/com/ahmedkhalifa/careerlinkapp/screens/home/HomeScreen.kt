@@ -29,19 +29,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.ahmedkhalifa.careerlinkapp.composable.getColor
-import com.ahmedkhalifa.careerlinkapp.graphs.HomeNavGraph
-import com.ahmedkhalifa.careerlinkapp.graphs.ProfileGraph
+import com.ahmedkhalifa.careerlinkapp.graphs.Graph
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
 
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomeScreen(navController: NavHostController = rememberNavController()) {
+fun HomeScreen(navController: NavHostController) {
     val listState = rememberLazyListState()
 
     // Track if the user is scrolling down
@@ -55,7 +52,11 @@ fun HomeScreen(navController: NavHostController = rememberNavController()) {
             )
         }
     ) {
-        HomeNavGraph(navController = navController, listState = listState)
+        HomePage(
+            navigationController = navController,
+            listState = listState,
+            isScrollingDown = isScrollingDown
+        )
     }
 }
 
@@ -73,7 +74,7 @@ fun BottomBar(navController: NavHostController, isVisible: Boolean) {
     val currentDestination = navBackStackEntry?.destination
     val bottomBarDestination = screens.any {
         it.route == currentDestination?.route || currentDestination?.route?.startsWith(
-            ProfileGraph.Profile.route
+            Graph.Routes.PROFILE
         ) == true
     }
 
@@ -125,13 +126,14 @@ fun RowScope.AddItem(
         unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
         onClick = {
             navController.navigate(screen.route) {
-                popUpTo(navController.graph.findStartDestination().id)
+                popUpTo(navController.graph.startDestinationId) {
+                    inclusive = false
+                }
                 launchSingleTop = true
             }
         }
     )
 }
-
 
 @Composable
 fun rememberScrollDirection(listState: LazyListState): Boolean {
