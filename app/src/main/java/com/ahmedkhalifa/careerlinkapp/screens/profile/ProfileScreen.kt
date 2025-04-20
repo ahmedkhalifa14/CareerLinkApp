@@ -1,6 +1,5 @@
 package com.ahmedkhalifa.careerlinkapp.screens.profile
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -56,19 +55,14 @@ fun ProfileScreen(
         onClickLogOut = {
             authViewModel.logout()
             settingsViewModel.setUserLogin(false)
-//            Log.d("NavDebug", "Current destination: ${navController.currentDestination?.route}")
-//
+
             navController.navigate(Graph.AUTHENTICATION) {
                 popUpTo(Graph.HOME) {
                     inclusive = true
                 }
             }
-//            Log.d(
-//                "NavDebug",
-//                "Current destination after logout: ${navController.currentDestination?.route}"
-//            )
+
             navController.addOnDestinationChangedListener { _, destination, _ ->
-                Log.d("NavDebug", "Current destination: ${destination.route}")
             }
 
 

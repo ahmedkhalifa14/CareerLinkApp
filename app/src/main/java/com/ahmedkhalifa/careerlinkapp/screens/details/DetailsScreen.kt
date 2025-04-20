@@ -1,6 +1,9 @@
 package com.ahmedkhalifa.careerlinkapp.screens.details
 
 import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,11 +27,16 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -47,7 +55,9 @@ import com.ahmedkhalifa.careerlinkapp.models.Job
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppMainColor
 import com.ahmedkhalifa.careerlinkapp.ui.theme.Tajawal
+import com.ahmedkhalifa.careerlinkapp.utils.EventObserver
 import com.ahmedkhalifa.careerlinkapp.utils.timeSince
+import com.ahmedkhalifa.careerlinkapp.viewmodel.NotificationViewModel
 import com.ahmedkhalifa.careerlinkapp.viewmodel.RoomViewModel
 
 
@@ -56,20 +66,61 @@ import com.ahmedkhalifa.careerlinkapp.viewmodel.RoomViewModel
 fun DetailsScreen(
     navController: NavController,
     job: Job?,
-    roomViewModel: RoomViewModel = hiltViewModel()
+    roomViewModel: RoomViewModel = hiltViewModel(),
+    notificationViewModel: NotificationViewModel = hiltViewModel()
 ) {
-    val isJobSaved = remember { mutableStateOf(job!!.saved) }
+    val isJobSaved = remember { mutableStateOf(job?.saved ?: false) }
+    val notificationState = notificationViewModel.sendNotificationState.collectAsState()
+    val context = LocalContext.current
+    var hasTriggeredNotification by remember { mutableStateOf(false) }
+
+    // Launcher لطلب إذن الإشعارات
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            job?.let { notificationViewModel.sendNotification(it) }
+        } else {
+            Toast.makeText(context, "برجاء تفعيل إذن الإشعارات", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    LaunchedEffect(notificationState.value) {
+        if (hasTriggeredNotification) {
+            notificationViewModel.sendNotificationState.collect(
+                EventObserver<Boolean>(
+                    onLoading = {
+                        Toast.makeText(context, "جاري الإرسال...", Toast.LENGTH_SHORT).show()
+                    },
+                    onError = {
+                        Toast.makeText(context, "خطأ: $it", Toast.LENGTH_SHORT).show()
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            permissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                        }
+                    },
+                    onSuccess = {
+                        Toast.makeText(context, "تم إرسال الإشعار!", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            )
+        }
+    }
+
     DetailsScreenContent(
         jobState = job,
         isJobSaved = isJobSaved.value,
         onClickSave = { job ->
-            val newSavedState  = !isJobSaved.value
-            roomViewModel.updateSavedStatus(job.id!!,newSavedState )
-            isJobSaved.value= newSavedState
-        }
-        ,
-        onClickApply = {
-
+            job.let {
+                val newSavedState = !isJobSaved.value
+                roomViewModel.updateSavedStatus(it.id ?: return@let, newSavedState)
+                isJobSaved.value = newSavedState
+            }
+        },
+        onClickApply = { job ->
+            job.let {
+                hasTriggeredNotification = true
+                notificationViewModel.sendNotification(it)
+            }
         }
     )
 }
@@ -78,13 +129,14 @@ fun DetailsScreen(
 @Composable
 fun DetailsScreenContent(
     jobState: Job? = null,
-    isJobSaved: Boolean = jobState!!.saved,
+    isJobSaved: Boolean = jobState?.saved ?: false,
     onClickSave: (Job) -> Unit = {},
-    onClickApply : (Job) -> Unit = {},
+    onClickApply: (Job) -> Unit = {}
 ) {
     val screenBackgroundColor = getColor(AppColors.AppColorSet.AppScreenBackgroundColor)
     val textColor = getColor(AppColors.AppColorSet.AppMainTextColor)
     val cardBackgroundColor = getColor(AppColors.AppColorSet.AppCardBackgroundColor)
+
     ConstraintLayout(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -92,12 +144,9 @@ fun DetailsScreenContent(
             .background(screenBackgroundColor)
             .padding(16.dp)
     ) {
-
         val guideline = createGuidelineFromTop(32.dp)
-        val (companyLogo,
-            cards,
-            jobDetails
-        ) = createRefs()
+        val (companyLogo, cards, jobDetails) = createRefs()
+
         Image(
             modifier = Modifier
                 .size(114.dp)
@@ -107,12 +156,13 @@ fun DetailsScreenContent(
                     start.linkTo(parent.start)
                 },
             painter = rememberAsyncImagePainter(
-                model = jobState!!.company_logo_url,
+                model = jobState?.company_logo_url,
                 placeholder = painterResource(id = R.drawable.app_logo),
                 error = painterResource(id = R.drawable.app_logo)
             ),
-            contentDescription = "Company Logo",
+            contentDescription = "Company Logo"
         )
+
         Row(
             modifier = Modifier.constrainAs(cards) {
                 top.linkTo(guideline)
@@ -121,13 +171,11 @@ fun DetailsScreenContent(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Card(modifier = Modifier.background(cardBackgroundColor)
-                ,
-                colors = CardDefaults.cardColors(
-                    containerColor = cardBackgroundColor
-                )
+            Card(
+                modifier = Modifier.background(cardBackgroundColor),
+                colors = CardDefaults.cardColors(containerColor = cardBackgroundColor)
             ) {
-                IconButton(onClick = { onClickSave(jobState) }) {
+                IconButton(onClick = { jobState?.let { onClickSave(it) } }) {
                     Icon(
                         painter = painterResource(id = if (isJobSaved) R.drawable.marked_ic else R.drawable.not_marked_ic),
                         contentDescription = "Favorite"
@@ -135,11 +183,9 @@ fun DetailsScreenContent(
                 }
             }
 
-            Card(modifier = Modifier.background(cardBackgroundColor)
-            ,
-                colors = CardDefaults.cardColors(
-                    containerColor = cardBackgroundColor
-                )
+            Card(
+                modifier = Modifier.background(cardBackgroundColor),
+                colors = CardDefaults.cardColors(containerColor = cardBackgroundColor)
             ) {
                 IconButton(onClick = {}) {
                     Icon(
@@ -149,7 +195,9 @@ fun DetailsScreenContent(
                 }
             }
         }
+
         Spacer(modifier = Modifier.height(16.dp))
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -160,7 +208,7 @@ fun DetailsScreenContent(
                 },
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            jobState.title?.let {
+            jobState?.title?.let {
                 Text(
                     text = it,
                     fontSize = 24.sp,
@@ -170,16 +218,11 @@ fun DetailsScreenContent(
                 )
             }
             Card(
-                modifier = Modifier
-                    .background(cardBackgroundColor),
-                shape = RoundedCornerShape(8.dp)
-                ,
-                colors = CardDefaults.cardColors(
-                    containerColor = cardBackgroundColor
-                )
-
+                modifier = Modifier.background(cardBackgroundColor),
+                shape = RoundedCornerShape(8.dp),
+                colors = CardDefaults.cardColors(containerColor = cardBackgroundColor)
             ) {
-                jobState.category?.let {
+                jobState?.category?.let {
                     DetailsScreenTextView(
                         text = it,
                         fontWeight = FontWeight.Medium,
@@ -187,19 +230,19 @@ fun DetailsScreenContent(
                     )
                 }
             }
-            jobState.company_name?.let {
+            jobState?.company_name?.let {
                 DetailsScreenTextView(
                     text = it,
                     fontWeight = FontWeight.Medium
                 )
             }
-            jobState.location?.let {
+            jobState?.location?.let {
                 DetailsScreenTextView(
                     text = it,
                     fontWeight = FontWeight.Medium
                 )
             }
-            jobState.publication_date?.let { timeSince(it) }?.let {
+            jobState?.publication_date?.let { timeSince(it) }?.let {
                 DetailsScreenTextView(
                     text = it,
                     fontWeight = FontWeight.Light
@@ -212,63 +255,63 @@ fun DetailsScreenContent(
                     containerColor = AppMainColor,
                     contentColor = Color.White
                 ),
-                onClick = {}) {
+                onClick = { jobState?.let { onClickApply(it) } }
+            ) {
                 Text(
                     modifier = Modifier.padding(4.dp),
                     text = stringResource(R.string.apply_for_job),
                     fontWeight = FontWeight.Medium,
                     fontSize = 20.sp,
-                    color = textColor,
+                    color = Color.White,
                     fontFamily = Tajawal
                 )
             }
             DetailsScreenTextView(
-                text = "Job Details ",
+                text = "Job Details",
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp
             )
-            DetailsScreenTextView(text = stringResource(R.string.job_type), fontWeight = FontWeight.Light)
-            jobState.job_type?.let {
+            DetailsScreenTextView(
+                text = stringResource(R.string.job_type),
+                fontWeight = FontWeight.Light
+            )
+            jobState?.job_type?.let {
                 DetailsScreenTextView(
                     text = it,
                     fontWeight = FontWeight.SemiBold
                 )
             }
-            DetailsScreenTextView(text = stringResource(R.string.salary), fontWeight = FontWeight.Light)
-            jobState.salary?.let {
+            DetailsScreenTextView(
+                text = stringResource(R.string.salary),
+                fontWeight = FontWeight.Light
+            )
+            jobState?.salary?.let {
                 DetailsScreenTextView(
                     text = it,
                     fontWeight = FontWeight.SemiBold
                 )
             }
-            jobState.tags?.let {
-                SkillsAndToolsCard(skills = it) {
-
-                }
+            jobState?.tags?.let {
+                SkillsAndToolsCard(skills = it) {}
             }
             DetailsScreenTextView(
                 text = stringResource(R.string.job_description),
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp
             )
-            jobState.description?.let {
+            jobState?.description?.let {
                 DetailsScreenTextView(
                     text = it,
                     fontWeight = FontWeight.SemiBold
                 )
             }
-
-
         }
-
-
     }
-
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewDetailsScreen() {
-    DetailsScreenContent(null)
+    DetailsScreenContent()
 }

@@ -40,9 +40,12 @@ import com.ahmedkhalifa.careerlinkapp.composable.CustomBtn
 import com.ahmedkhalifa.careerlinkapp.composable.CustomImageButton
 import com.ahmedkhalifa.careerlinkapp.composable.CustomTextField
 import com.ahmedkhalifa.careerlinkapp.composable.PasswordTextField
+import com.ahmedkhalifa.careerlinkapp.composable.getColor
 import com.ahmedkhalifa.careerlinkapp.graphs.Graph
+import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
 import com.ahmedkhalifa.careerlinkapp.ui.theme.FacebookIconColor
 import com.ahmedkhalifa.careerlinkapp.ui.theme.GoogleIconColor
+import com.ahmedkhalifa.careerlinkapp.ui.theme.Tajawal
 import com.ahmedkhalifa.careerlinkapp.utils.Event
 import com.ahmedkhalifa.careerlinkapp.utils.Resource
 import com.ahmedkhalifa.careerlinkapp.viewmodel.AuthViewModel
@@ -80,14 +83,14 @@ fun LoginScreen(
     }
     loginState.value?.let {
         LoginScreenContent(
-        onForgetClick = { },
-        onClickGoogleAuth = {},
-        onClickFacebookAuth = {},
-        onClickLogin = { email, password ->
-            viewModel.login(email, password)
-        },
-        loginState = it
-    )
+            onForgetClick = { },
+            onClickGoogleAuth = {},
+            onClickFacebookAuth = {},
+            onClickLogin = { email, password ->
+                viewModel.login(email, password)
+            },
+            loginState = it
+        )
     }
 
 }
@@ -114,15 +117,17 @@ fun LoginScreenContent(
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
-            color = Color.Black,
+            fontFamily = Tajawal,
+            color = getColor(AppColors.AppColorSet.AppMainTextColor),
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
         Text(
             text = stringResource(R.string.login_subtitle),
-            style = MaterialTheme.typography.bodyMedium,
             fontSize = 20.sp,
-            color = Color.Gray,
+            fontWeight = FontWeight.Normal,
+            fontFamily = Tajawal,
+            color = getColor(AppColors.AppColorSet.AppSecondTextColor),
             lineHeight = 18.sp,
             modifier = Modifier.padding(bottom = 16.dp)
         )
@@ -155,7 +160,9 @@ fun LoginScreenContent(
             text = stringResource(R.string.forget_password),
             style = MaterialTheme.typography.bodyMedium,
             fontSize = 18.sp,
-            color = Color.Gray,
+            fontWeight = FontWeight.Normal,
+            fontFamily = Tajawal,
+            color = getColor(AppColors.AppColorSet.AppSecondTextColor),
             lineHeight = 18.sp,
             modifier = Modifier
                 .padding(bottom = 16.dp)
@@ -171,7 +178,9 @@ fun LoginScreenContent(
             text = stringResource(R.string.or_continue_with),
             style = MaterialTheme.typography.bodyMedium,
             fontSize = 18.sp,
-            color = Color.Gray,
+            color = getColor(AppColors.AppColorSet.AppSecondTextColor),
+            fontFamily = Tajawal,
+            fontWeight = FontWeight.Normal,
             lineHeight = 18.sp,
             modifier = Modifier
                 .padding(bottom = 16.dp)
@@ -190,7 +199,7 @@ fun LoginScreenContent(
 
                 image = painterResource(id = R.drawable.facebook),
                 backgroundColor = FacebookIconColor,
-                onClick = { /* Handle click */ }
+                onClick = {}
             )
         }
         Spacer(modifier = Modifier.height(32.dp))
@@ -200,7 +209,9 @@ fun LoginScreenContent(
                 text = stringResource(R.string.new_user),
                 style = MaterialTheme.typography.bodyMedium,
                 fontSize = 18.sp,
-                color = Color.Gray,
+                color = getColor(AppColors.AppColorSet.AppSecondTextColor),
+                fontFamily = Tajawal,
+                fontWeight = FontWeight.Normal,
                 lineHeight = 18.sp,
                 modifier = Modifier
                     .padding(bottom = 16.dp)
@@ -210,7 +221,9 @@ fun LoginScreenContent(
                 text = stringResource(R.string.create_account),
                 style = MaterialTheme.typography.bodyMedium,
                 fontSize = 18.sp,
-                color = Color.Black,
+                color = getColor(AppColors.AppColorSet.AppMainTextColor),
+                fontFamily = Tajawal,
+                fontWeight = FontWeight.Bold,
                 lineHeight = 18.sp,
                 modifier = Modifier
                     .padding(bottom = 16.dp)

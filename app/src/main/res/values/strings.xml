@@ -80,4 +80,15 @@
     <string name="please_fill_all_fields">Please fill all fields</string>
     <string name="no_saved_jobs">No saved jobs!</string>
 
+    <string name="notification_title">Application Submitted for %1$s</string>
+    <string name="notification_body">Your application to %1$s is under review.</string>
+
+    <string name="application_status">Application Status</string>
+    <string name="job_title">Job Title: %1$s</string>
+    <string name="job_id">Job ID: %1$s</string>
+    <string name="pending_review">Pending Review</string>
+    <string name="back">Back</string>
+    <string name="unknown">Unknown</string>
+
+
 </resources>

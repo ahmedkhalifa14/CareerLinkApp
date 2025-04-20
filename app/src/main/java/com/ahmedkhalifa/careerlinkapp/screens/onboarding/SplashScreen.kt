@@ -54,7 +54,7 @@ fun SplashScreen(
                     durationMillis = 1200
                 )
             )
-            kotlinx.coroutines.delay(2000)
+            kotlinx.coroutines.delay(1000)
             when {
                 !isFirstTimeLaunch!! -> {
                     navController.navigate(AuthScreen.OnBoarding.route) {

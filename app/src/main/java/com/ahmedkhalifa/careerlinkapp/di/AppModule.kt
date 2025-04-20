@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.ahmedkhalifa.careerlinkapp.data.local.roomdb.JobRoomDatabase
+import com.ahmedkhalifa.careerlinkapp.notification.AppNotificationManager
 import com.ahmedkhalifa.careerlinkapp.helper.NetworkHelper
+import com.ahmedkhalifa.careerlinkapp.repo.notifications.NotificationRepoImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,11 +25,13 @@ object AppModule {
         return Room.databaseBuilder(
             context,
             JobRoomDatabase::class.java,
-            "job_database")
+            "job_database"
+        )
             .setJournalMode(RoomDatabase.JournalMode.TRUNCATE)
             .fallbackToDestructiveMigration()
             .build()
     }
+
     @Provides
     @Singleton
     fun provideJobDao(jobRoomDatabase: JobRoomDatabase) = jobRoomDatabase.jobDao()
@@ -38,4 +42,15 @@ object AppModule {
         return NetworkHelper(context)
     }
 
+    @Provides
+    @Singleton
+    fun provideNotificationManager(@ApplicationContext context: Context): AppNotificationManager {
+        return AppNotificationManager(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotificationRepo(notificationManager: AppNotificationManager): com.ahmedkhalifa.careerlinkapp.repo.notifications.NotificationRepo {
+        return NotificationRepoImpl(notificationManager)
+    }
 }
