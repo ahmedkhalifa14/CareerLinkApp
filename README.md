@@ -36,8 +36,7 @@ git clone https://github.com/ahmedkhalifa14/CareerLinkApp.git
 | 🔐 Authentication | Email/Google sign-in, profile storage in Firestore                      | Firebase Auth, Firestore      |
 | 🔎 Job Search     | Real-time + offline browsing using Remotive API & Room                  | Retrofit, Room, Coroutines    |
 | ⭐ Favorites      | Save jobs locally for offline access                                    | Room, DataStore               |
-| 📩 Notifications  | Push notifications for job applications                                 | Local Notification
-|
+| 📩 Notifications  | Push notifications for job applications                                 | Local Notification|
 | 🎉 Splash Screen  | Smooth launch experience                                                | SplashScreen 
 |
 | 🚀 Onboarding     | Intro tutorial for new users                                            | Jetpack Compose, Navigation  | 
