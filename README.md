@@ -1,15 +1,8 @@
-```
-   ____ _          _ _       _     _       _    
-  / ___| |__   ___| | | ___ | |   (_)     | |   
- | |   | '_ \ / __| | |/ _ \| |   | | __ _| |__ 
- | |___| | | | (__| | | (_) | |___| |/ _` | '_ \
-  \____|_| |_|\___|_|_|\___/|_____/ |\__,_|_.__/
-                                   |__/          
-```
 
-# 🚀 CareerLinkApp - Smart Android Job Finder
+# 🚀 CareerLinkApp
+### Your Smart Android Job Finder App
 
-CareerLinkApp is your all-in-one Android app for effortless job hunting. Whether you're a fresh graduate or a seasoned professional, CareerLinkApp makes job discovery, saving, and applying a breeze—online and offline.
+CareerLinkApp is your all-in-one job search companion! 🚀 Whether you're hunting for your first job or your next big opportunity, this modern Android app makes it seamless to discover, save, and apply to jobs with an elegant UI and robust features like offline support, push notifications, and more!
 
 ---
 
