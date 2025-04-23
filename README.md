@@ -40,8 +40,8 @@ git clone https://github.com/ahmedkhalifa14/CareerLinkApp.git
 |
 | 🎉 Splash Screen  | Smooth launch experience                                                | SplashScreen 
 |
-| 🚀 Onboarding     | Intro tutorial for new users                                             | Jetpack Compose, Navigation   |
-| 🌙 Theme Switch   | Dark & Light mode                                                        | DataStore, Compose            |
+| 🚀 Onboarding     | Intro tutorial for new users                                            | Jetpack Compose, Navigation  | 
+| 🌙 Theme Switch   | Dark & Light mode                                                        | DataStore, Compose           |
 | 🌍 Multilingual   | English 🇬🇧 and Arabic 🇦🇪 support                                       | DataStore, Compose            |
 
 ---
