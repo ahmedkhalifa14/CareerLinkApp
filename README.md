@@ -45,16 +45,7 @@ git clone https://github.com/ahmedkhalifa14/CareerLinkApp.git
 ---
 
 ## 🎥 Demo Video
-🎬 *Coming Soon...*
 
-Embed once available:
-```html
-<video src="https://github.com/ahmedkhalifa14/CareerLinkApp/raw/main/assets/demo.mp4" controls width="600"></video>
-```
-Or YouTube:
-```md
-[![CareerLinkApp Demo](https://img.youtube.com/vi/your-video-id/0.jpg)](https://www.youtube.com/watch?v=your-video-id)
-```
 
 ---
 
@@ -66,12 +57,10 @@ Clean, modular, and scalable using:
 
 ### Layers
 - **Presentation**: Jetpack Compose UI + ViewModels
-- **Domain**: Use cases, business logic
 - **Data**: API, Firebase, Room, DataStore
 
 ### Modules
 - **App**: UI Layer
-- **Domain**: Logic/Use Cases
 - **Data**: APIs + local storage
 
 ---
@@ -83,8 +72,8 @@ Clean, modular, and scalable using:
 | Jetpack Compose   | Declarative UI                   | [Docs](https://developer.android.com/jetpack/compose) |
 | Hilt              | Dependency Injection             | [Docs](https://dagger.dev/hilt) |
 | Room              | Offline database                 | [Docs](https://developer.android.com/jetpack/androidx/releases/room) |
-| Firebase          | Auth, Firestore, Messaging       | [Docs](https://firebase.google.com/docs) |
-| Retrofit + OkHttp | Networking                       | [Docs](https://square.github.io/retrofit/) |
+| Firebase          | Auth, Firestore,                 | [Docs](https://firebase.google.com/docs) |
+| Retrofit + OkHttp |                                  | [Docs](https://square.github.io/retrofit/) |
 | DataStore         | Preference storage               | [Docs](https://developer.android.com/topic/libraries/architecture/datastore) |
 | Coil              | Image loading                    | [Docs](https://coil-kt.github.io/coil/) |
 | Navigation Compose| In-app navigation                | [Docs](https://developer.android.com/jetpack/compose/navigation) |
