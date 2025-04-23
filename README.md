@@ -9,11 +9,11 @@ Find your dream job, anytime, anywhere! 🌟
 # 📑 Table of Contents
 
 ## Main Features
-Demo Video
-App Architecture
-Tools and Techniques
-Installation
-Usage
+#### Demo Video
+#### App Architecture
+#### Tools and Techniques
+#### Installation
+#### Usage
 
 
 
