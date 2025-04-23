@@ -22,7 +22,6 @@ CareerLinkApp is your all-in-one Android app for effortless job hunting. Whether
 - [⚙️ Installation Guide](#-installation-guide)
 - [📱 How to Use](#-how-to-use)
 - [🤝 Contributing](#-contributing)
-- [📜 License](#-license)
 
 ---
 
