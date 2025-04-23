@@ -15,7 +15,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -41,11 +40,6 @@ fun ApplicationStatusScreen(
 ) {
     val context = LocalContext.current
 
-    Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(getColor(AppColors.AppColorSet.AppScreenBackgroundColor))
-    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -144,9 +138,10 @@ fun ApplicationStatusScreen(
                     text = stringResource(R.string.back),
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp,
-                    fontFamily = Tajawal
+                    fontFamily = Tajawal,
+                    color = getColor(AppColors.AppColorSet.AppMainTextColor)
                 )
             }
         }
     }
-}
+

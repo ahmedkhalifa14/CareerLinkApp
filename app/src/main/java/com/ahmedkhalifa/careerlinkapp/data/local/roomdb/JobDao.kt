@@ -19,12 +19,17 @@ interface JobDao {
     @Query("SELECT * FROM job_table WHERE saved = 1 ORDER BY dateAdded DESC")
     suspend fun getSavedJobs(): List<Job>
 
+    @Query("SELECT * FROM job_table WHERE applied = 1 ORDER BY dateAdded DESC")
+    suspend fun getAppliedJobs(): List<Job>
+
     @Query("SELECT * FROM job_table")
     suspend fun getAllJobsOnce(): List<Job>
 
     @Query("UPDATE job_table SET saved = :saved WHERE id = :jobId")
     suspend fun updateSavedStatus(jobId: Int, saved: Boolean)
 
+    @Query("UPDATE job_table SET applied = :applied WHERE id = :jobId")
+    suspend fun updateAppliedStatus(jobId: Int, applied: Boolean)
 
     @Query("DELETE FROM job_table WHERE id = :jobId")
     suspend fun deleteJob(jobId: Int): Int
@@ -32,19 +37,21 @@ interface JobDao {
     @Query("DELETE FROM job_table")
     suspend fun deleteAllJobs(): Int
 
-    @Query("SELECT EXISTS(SELECT 1 FROM job_table WHERE id = :jobId and saved=1 LIMIT 1)")
-    suspend fun doesJobExist(jobId: Int): Boolean
-
     @Transaction
     suspend fun upsertJobs(jobs: List<Job>) {
         val localJobs = getAllJobsOnce().associateBy { it.id }
 
         val merged = jobs.map { remote ->
             val local = localJobs[remote.id]
-            remote.copy(saved = local?.saved ?: false, dateAdded = System.currentTimeMillis())
+            remote.copy(
+                saved = local?.saved ?: false,
+                applied = local?.applied ?: false,
+                dateAdded = System.currentTimeMillis()
+            )
         }
-
-        merged.forEach { insertJob(it) }
+        merged.forEach {
+            insertJob(it)
+        }
     }
 }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">CareerLinkApp</string>
+    <string name="app_name">CareerLink</string>
     <string name="onboarding_image_desc">CareerLinkApp</string>
     <string name="onboarding_title">اعثر على وظيفة أحلامك</string>
     <string name="onboarding_subtitle">العثور على وظيفة أحلامك أصبح أسهل وأسرع مع CareerLink</string>
@@ -82,7 +82,6 @@
     <string name="no_saved_jobs">لاتوجد وظائف محفوظه !</string>
     <string name="notification_title">تم التقديم على %1$s</string>
     <string name="notification_body">طلبك لـ %1$s في انتظار المراجعة.</string>
-
     <string name="application_status">حالة الطلب</string>
     <string name="job_title">الوظيفة: %1$s</string>
     <string name="job_id">رقم الطلب: %1$s</string>

@@ -1,6 +1,7 @@
 package com.ahmedkhalifa.careerlinkapp.screens.details
 
 import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -32,6 +33,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,19 +71,21 @@ fun DetailsScreen(
     roomViewModel: RoomViewModel = hiltViewModel(),
     notificationViewModel: NotificationViewModel = hiltViewModel()
 ) {
-    val isJobSaved = remember { mutableStateOf(job?.saved ?: false) }
+    Log.d("DetailsScreen", "DetailsScreen: $job")
+    val isJobSaved = rememberSaveable { mutableStateOf(job?.saved ?: false) }
+    val isJobApplied = rememberSaveable { mutableStateOf(job?.applied ?: false) }
     val notificationState = notificationViewModel.sendNotificationState.collectAsState()
     val context = LocalContext.current
     var hasTriggeredNotification by remember { mutableStateOf(false) }
 
-    // Launcher لطلب إذن الإشعارات
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
             job?.let { notificationViewModel.sendNotification(it) }
         } else {
-            Toast.makeText(context, "برجاء تفعيل إذن الإشعارات", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Please enable notification permission", Toast.LENGTH_LONG)
+                .show()
         }
     }
 
@@ -90,16 +94,16 @@ fun DetailsScreen(
             notificationViewModel.sendNotificationState.collect(
                 EventObserver<Boolean>(
                     onLoading = {
-                        Toast.makeText(context, "جاري الإرسال...", Toast.LENGTH_SHORT).show()
+
                     },
                     onError = {
-                        Toast.makeText(context, "خطأ: $it", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Error: $it", Toast.LENGTH_SHORT).show()
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                             permissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
                         }
                     },
                     onSuccess = {
-                        Toast.makeText(context, "تم إرسال الإشعار!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "", Toast.LENGTH_SHORT).show()
                     }
                 )
             )
@@ -109,6 +113,7 @@ fun DetailsScreen(
     DetailsScreenContent(
         jobState = job,
         isJobSaved = isJobSaved.value,
+        isJobApplied = isJobApplied.value,
         onClickSave = { job ->
             job.let {
                 val newSavedState = !isJobSaved.value
@@ -118,10 +123,14 @@ fun DetailsScreen(
         },
         onClickApply = { job ->
             job.let {
+                val newAppliedState = !isJobApplied.value
+                roomViewModel.updateAppliedStatus(it.id!!, newAppliedState)
                 hasTriggeredNotification = true
                 notificationViewModel.sendNotification(it)
+                isJobApplied.value = newAppliedState
             }
         }
+
     )
 }
 
@@ -130,6 +139,7 @@ fun DetailsScreen(
 fun DetailsScreenContent(
     jobState: Job? = null,
     isJobSaved: Boolean = jobState?.saved ?: false,
+    isJobApplied: Boolean = jobState?.applied ?: false,
     onClickSave: (Job) -> Unit = {},
     onClickApply: (Job) -> Unit = {}
 ) {
@@ -255,6 +265,7 @@ fun DetailsScreenContent(
                     containerColor = AppMainColor,
                     contentColor = Color.White
                 ),
+                enabled = !isJobApplied,
                 onClick = { jobState?.let { onClickApply(it) } }
             ) {
                 Text(

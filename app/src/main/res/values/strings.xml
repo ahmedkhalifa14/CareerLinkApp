@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CareerLinkApp</string>
+    <string name="app_name">CareerLink</string>
     <string name="onboarding_image_desc">CareerLinkApp</string>
     <string name="onboarding_title">Find a Perfect \n Job Match</string>
     <string name="onboarding_subtitle">Finding your dream job is more easier \n and faster with CareerLink</string>
@@ -89,6 +89,7 @@
     <string name="pending_review">Pending Review</string>
     <string name="back">Back</string>
     <string name="unknown">Unknown</string>
+    <string name="applied_jobs">Your Job Applications</string>
 
 
 </resources>

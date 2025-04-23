@@ -26,7 +26,7 @@ class NotificationViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             _sendNotificationState.emit(Event(Resource.Loading()))
-            delay(300)
+            delay(1000)
             val result = notificationRepo.triggerNotification(
                 job
             )

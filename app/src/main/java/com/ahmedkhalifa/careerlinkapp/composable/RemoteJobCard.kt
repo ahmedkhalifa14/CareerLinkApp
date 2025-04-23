@@ -23,10 +23,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.ahmedkhalifa.careerlinkapp.R
 import com.ahmedkhalifa.careerlinkapp.models.Job
 import com.ahmedkhalifa.careerlinkapp.ui.theme.AppColors
+import com.ahmedkhalifa.careerlinkapp.ui.theme.AppMainColor
 import com.ahmedkhalifa.careerlinkapp.ui.theme.Tajawal
 import com.ahmedkhalifa.careerlinkapp.utils.getDefault
 import com.ahmedkhalifa.careerlinkapp.utils.truncate
@@ -37,7 +39,8 @@ fun RemoteJobCard(
     job: Job,
     onClick: () -> Unit,
     onLongClick: () -> Unit = {},
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: () -> Unit,
+    viewFavIcon: Boolean = true,
 ) {
     val cardBackgroundColor = getColor(AppColors.AppColorSet.AppCardBackgroundColor)
     val textColor = getColor(AppColors.AppColorSet.AppMainTextColor)
@@ -75,36 +78,78 @@ fun RemoteJobCard(
             Column(modifier = Modifier.weight(1f)) {
                 // Job title
                 job.title?.let {
-                    Text(it, fontWeight = FontWeight.Bold, fontFamily = Tajawal, maxLines = 1, color = textColor)
+                    Text(
+                        it,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = Tajawal,
+                        maxLines = 1,
+                        color = textColor
+                    )
                 }
                 // Job type
                 job.job_type?.let {
-                    Text(it.truncate(20), color = textSecondColor, fontWeight = FontWeight.Normal, fontFamily = Tajawal)
+                    Text(
+                        it.truncate(20),
+                        color = textSecondColor,
+                        fontWeight = FontWeight.Normal,
+                        fontFamily = Tajawal
+                    )
                 }
                 // Salary
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(painterResource(R.drawable.dollar_money_sign_icon), contentDescription = null, modifier = Modifier.size(16.dp))
+                    Icon(
+                        painterResource(R.drawable.dollar_money_sign_icon),
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp)
+                    )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(job.salary.getDefault(), maxLines = 1, color = textSecondColor, fontWeight = FontWeight.Normal, fontFamily = Tajawal)
+                    Text(
+                        job.salary.getDefault(),
+                        maxLines = 1,
+                        color = textSecondColor,
+                        fontWeight = FontWeight.Normal,
+                        fontFamily = Tajawal
+                    )
                 }
                 // Location
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(painterResource(R.drawable.location_ic), contentDescription = null, modifier = Modifier.size(16.dp))
+                    Icon(
+                        painterResource(R.drawable.location_ic),
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp)
+                    )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(job.location?.truncate(20).getDefault(), color = textSecondColor, fontWeight = FontWeight.Normal, fontFamily = Tajawal)
+                    Text(
+                        job.location?.truncate(20).getDefault(),
+                        color = textSecondColor,
+                        fontWeight = FontWeight.Normal,
+                        fontFamily = Tajawal
+                    )
                 }
             }
 
             // Favorite Icon Button
-            IconButton(onClick = onFavoriteClick) {
-                Icon(
-                    painter = painterResource(
-                        id = if (job.saved) R.drawable.marked_ic else R.drawable.not_marked_ic
-                    ),
-                    contentDescription = "Favorite Icon",
-                    tint = if (job.saved) Color.Red else Color.Gray
+            if (viewFavIcon) {
+                IconButton(onClick = onFavoriteClick) {
+                    Icon(
+                        painter = painterResource(
+                            id = if (job.saved) R.drawable.marked_ic else R.drawable.not_marked_ic
+                        ),
+                        contentDescription = "Favorite Icon",
+                        tint = if (job.saved) Color.Red else Color.Gray
+                    )
+                }
+            } else {
+                Text(
+                    "Applied",
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 14.sp,
+                    fontFamily = Tajawal,
+                    color = AppMainColor
                 )
             }
+
+
         }
     }
 }

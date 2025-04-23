@@ -30,14 +30,20 @@ class ApiRepoImpl @Inject constructor(
                         ?.mapNotNull { it.id }
                         ?.toSet() ?: emptySet()
 
+                    // Fetch applied job IDs from Room
+                    val appliedJobsIds = roomDbRepo.getAppliedJobs().data
+                        ?.mapNotNull { it.id }
+                        ?.toSet() ?: emptySet()
+
                     // Merge saved status into remote jobs
                     val mergedJobs = remoteJobs.map { job ->
-                        job.copy(saved = job.id != null && savedJobIds.contains(job.id))
+                        job.copy(
+                            saved = job.id != null && savedJobIds.contains(job.id),
+                            applied = job.id != null && appliedJobsIds.contains(job.id)
+                        )
                     }
-
                     // Cache updated jobs in Room
                     roomDbRepo.upsertJobs(mergedJobs)
-
                     // Return updated API response
                     Resource.Success(apiResponse.copy(jobs = ArrayList(mergedJobs)))
                 } else {

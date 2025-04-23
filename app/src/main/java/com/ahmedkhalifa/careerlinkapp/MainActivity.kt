@@ -51,9 +51,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Enable Edge-to-Edge mode
         enableEdgeToEdge()
-
         applyInitialTheme()
         setContent {
             val navController = rememberNavController()
@@ -62,7 +60,8 @@ class MainActivity : ComponentActivity() {
             val currentRoute by navController.currentBackStackEntryAsState()
             val isSplashScreen = currentRoute?.destination?.route == Graph.SPLASH
 
-            LaunchedEffect(darkModeEnabled, isSplashScreen) {
+            // Update Status Bar whenever route or dark mode changes
+            LaunchedEffect(darkModeEnabled, currentRoute) {
                 if (darkModeEnabled == null) {
                     val systemDarkMode = isSystemInDarkMode()
                     settingsViewModel.setDarkModeEnabled(systemDarkMode)
@@ -92,13 +91,11 @@ class MainActivity : ComponentActivity() {
                     RootNavigationGraph(navController = navController)
                 }
             }
-
             // Handle deep link in LaunchedEffect to ensure NavController is ready
             LaunchedEffect(intent) {
                 handleDeepLink(intent)
             }
         }
-
         // Initial deep link handling
         handleDeepLink(intent)
     }
@@ -119,11 +116,9 @@ class MainActivity : ComponentActivity() {
                     URLDecoder.decode(it, StandardCharsets.UTF_8.toString())
                 }
                 Log.d("MainActivity", "Extracted jobId=$jobId, jobTitle=$jobTitle")
-
                 // Construct the route manually
                 val route = "application_status?jobId=$jobId&jobTitle=${URLEncoder.encode(jobTitle ?: "", StandardCharsets.UTF_8.toString())}"
                 Log.d("MainActivity", "Navigating to route: $route")
-
                 lifecycleScope.launch {
                     // Add slight delay to ensure NavController is ready
                     delay(100)
@@ -135,7 +130,7 @@ class MainActivity : ComponentActivity() {
                             }
                             launchSingleTop = true
                         }
-                        // Restore Status Bar after navigating away from SplashScreen
+                        // Ensure Status Bar is updated after navigation
                         updateStatusBarColors(isSystemInDarkMode(), isSplashScreen = false)
                     } catch (e: IllegalArgumentException) {
                         Log.e("MainActivity", "Navigation failed: ${e.message}")
@@ -158,6 +153,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun updateStatusBarColors(isDarkMode: Boolean, isSplashScreen: Boolean) {
+        Log.d("MainActivity", "Updating Status Bar: isSplashScreen=$isSplashScreen, isDarkMode=$isDarkMode")
         val insetsController = WindowCompat.getInsetsController(window, window.decorView)
         if (isSplashScreen) {
             // Hide Status Bar for SplashScreen
@@ -177,7 +173,6 @@ class MainActivity : ComponentActivity() {
 
     private fun isSystemInDarkMode(): Boolean {
         val systemMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        val isDarkMode = systemMode == Configuration.UI_MODE_NIGHT_YES
-        return isDarkMode
+        return systemMode == Configuration.UI_MODE_NIGHT_YES
     }
 }

@@ -21,6 +21,7 @@ fun RemoteJobsSection(
     onJobClick: (Job) -> Unit,
     onJobLongClick: (Job) -> Unit = {},
     onFavoriteClick: (Job) -> Unit,
+    viewFavIcon : Boolean = true,
 ) {
     Column(
         modifier = Modifier
@@ -41,6 +42,7 @@ fun RemoteJobsSection(
                     onClick = { onJobClick(job) },
                     onLongClick = { onJobLongClick(job) },
                     onFavoriteClick = { onFavoriteClick(job) },
+                    viewFavIcon = viewFavIcon,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }

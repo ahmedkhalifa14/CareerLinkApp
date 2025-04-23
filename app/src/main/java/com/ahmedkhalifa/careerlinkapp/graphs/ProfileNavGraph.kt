@@ -26,7 +26,7 @@ fun NavGraphBuilder.profileNavGraph(navController: NavHostController) {
             EditProfileScreen()
         }
         composable(ProfileGraph.Applications.route) {
-            ApplicationsScreen()
+            ApplicationsScreen(navController=navController)
         }
         composable(ProfileGraph.Notifications.route) {
             NotificationSettingsScreen()
