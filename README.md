@@ -45,7 +45,7 @@ git clone https://github.com/ahmedkhalifa14/CareerLinkApp.git
 ---
 
 ## 🎥 Demo Video
-
+[🎥 Watch Demo](https://github.com/ahmedkhalifa14/CareerLinkApp/blob/master/demo/app%20demo.mp4)
 
 ---
 
