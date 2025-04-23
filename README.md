@@ -1,41 +1,44 @@
-🚀 #CareerLinkApp - Job Finder Android Application
-CareerLinkApp is your ultimate companion for job hunting! This sleek Android app empowers users to discover, save, and apply for job opportunities with a modern, intuitive interface. Packed with features like offline browsing, push notifications, dark/light mode, and multilingual support (English and Arabic), it’s designed to make your job search effortless and engaging.
+# 🚀CareerLinkApp
+  ### Job Finder Android Application
+## CareerLinkApp
+is your ultimate companion for job hunting! This sleek Android app empowers users to discover, save, and apply for job opportunities with a modern, intuitive interface. Packed with features like offline browsing, push notifications, dark/light mode, and multilingual support (English and Arabic), it’s designed to make your job search effortless and engaging.
 
 Find your dream job, anytime, anywhere! 🌟
 
 
-📑 Table of Contents
+# 📑 Table of Contents
 
-Main Features
+## Main Features
 Demo Video
 App Architecture
 Tools and Techniques
 Installation
 Usage
-Contributing
-License
 
 
-🔍 Main Features
-🔐 Authentication
 
-Secure Sign-Up/Login: Powered by Firebase Authentication with Email/Password and Google Sign-In options.
+# 🔍 Main Features
+## 🔐 Authentication
+
+### Secure Sign-Up/Login: 
+Powered by Firebase Authentication with Email/Password and Google Sign-In options.
 User Profiles: Save personal details like name, photo, and address to Firebase Firestore for a tailored experience.
 
-💼 Job Listings
+### 💼 Job Listings
 
 Dynamic Job Search: Fetch job listings from a remote API when online.
 Offline Access: Cache jobs locally using Room Database for seamless browsing without internet.
 Favorites: Save jobs to local storage for quick access anytime.
 
-📝 Job Applications
+### 📝 Job Applications
 
-Apply with Ease: Submit job applications directly in the app.
+### Apply with Ease:Submit job applications directly in the app.
 Instant Notifications: Get push notifications confirming your application submission.
 
-🌟 User Experience
+### 🌟 User Experience
 
-Splash Screen: A branded, welcoming intro to the app.
+## Splash Screen: 
+A branded, welcoming intro to the app.
 Onboarding Flow: Guides new users through the app’s features.
 Dark/Light Mode: Switch themes based on your preference or system settings.
 Multilingual Support: Choose between English and Arabic for a personalized experience.
@@ -99,7 +102,7 @@ Here’s the tech stack powering CareerLinkApp, with a quick rundown of each too
 
 📚 Repository PatternAbstracts data sources into a single interface for seamless data access.
 
-💉 HiltSimplifies dependency injection, providing ViewModels and Repositories effortlessly.
+💉 Hilt dependency injection, providing ViewModels and Repositories effortlessly.
 
 💾 Room DatabaseCaches job listings locally for offline access.
 
@@ -161,7 +164,7 @@ Configure API Keys (if needed):
 Add any required API keys for job listings to local.properties.
 
 
-Sync and Build:
+## Sync and Build:
 
 Click Sync Project with Gradle Files to download dependencies.
 Resolve any issues if prompted.
