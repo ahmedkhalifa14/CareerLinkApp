@@ -8,7 +8,7 @@ Find your dream job, anytime, anywhere! 🌟
 
 # 📑 Table of Contents
 
-## Main Features
+#### Main Features
 #### Demo Video
 #### App Architecture
 #### Tools and Techniques
