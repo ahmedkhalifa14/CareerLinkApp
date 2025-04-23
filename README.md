@@ -1,290 +1,119 @@
-🚀 CareerLinkApp - Job Finder Android Application
-
-CareerLinkApp is the ultimate job-hunting companion for Android users! 🌟 This modern app empowers you to discover, save, and apply for job opportunities with a sleek, intuitive interface. Packed with cutting-edge features like offline browsing, push notifications, dark/light mode, and multilingual support (English and Arabic), it makes your job search seamless and engaging.
-
-Find your dream job, anytime, anywhere! 💼
-
-
-📑 Table of Contents
-
-Main Features
-Demo Video
-App Architecture
-Tools and Techniques
-Installation
-Usage
-Contributing
-License
-
-
-🔍 Main Features
-🔐 Authentication
-
-Secure Sign-Up/Login 🔑Use Firebase Authentication for Email/Password or Google Sign-In, ensuring safe and quick access.  
-User Profiles 📋Save personal details (name, photo, address) to Firebase Firestore for a personalized job-hunting experience.
-
-💼 Job Management
-
-Dynamic Job Search 🔎Browse job listings fetched from a remote API, updated in real-time when online.  
-Offline Access 📴Cache jobs locally with Room Database for uninterrupted browsing without internet.  
-Favorites ⭐Save your favorite jobs to local storage for quick access anytime.
-
-🔔 Notifications
-
-Instant Push Notifications 📩Receive confirmations for job applications via Android’s Notification API.  
-Stay Updated 🕒Get alerts for new job opportunities or application status changes (if implemented).
-
-🌟 UI/UX Enhancements
-
-Splash Screen 🎉A vibrant, branded intro that sets the tone for the app.  
-Onboarding Flow 🚀Guides new users through key features with an interactive tutorial.  
-Dark/Light Mode 🌙☀️Switch themes based on preference or system settings for a comfortable experience.  
-Multilingual Support 🌍Choose between English and Arabic to make the app accessible to more users.
-
-
-🎥 Demo Video
-See CareerLinkApp in action! The video below showcases its smooth UI and powerful features:
-[Insert Video Link Here]
-📌 How to Add the Video
-
-GitHub: Upload your video (e.g., demo.mp4) to an assets/ folder in the repository. Use this Markdown:  <video src="https://github.com/ahmedkhalifa14/CareerLinkApp/raw/main/assets/demo.mp4" controls width="600"></video>
-
-
-YouTube/Vimeo: Upload to YouTube or Vimeo and embed the link:  [![CareerLinkApp Demo](https://img.youtube.com/vi/your-video-id/0.jpg)](https://www.youtube.com/watch?v=your-video-id)
-
-
-
-
-Pro Tip: Keep the video short (30-60 seconds) and highlight features like job browsing, applying, and theme switching! 🎬
-
-
-🏗️ App Architecture
-CareerLinkApp is built with Clean Architecture, MVVM (Model-View-ViewModel), and Repository Pattern to ensure:
-
-Modularity: Easy to extend and maintain.  
-Testability: Simplifies unit and UI testing.  
-Separation of Concerns: Keeps UI, logic, and data layers independent.
-
-🧩 Multi-Module Structure
-The app is organized into three modules for flexibility and scalability:
-1. UI Module (App Module)
-
-Powers the Jetpack Compose UI and ViewModels.  
-Handles user interactions and displays data dynamically.
-
-2. Data Module
-
-Manages data sources (API, Room, DataStore, Firebase).  
-Provides repositories to abstract data access.
-
-3. Domain Module
-
-Encapsulates business logic and use cases.  
-Promotes reusability and isolates complex logic.
-
-📊 Clean Architecture Diagram
-Below is a visual representation of Clean Architecture used in CareerLinkApp:
-Source: Android Developer Documentation
-This diagram illustrates the separation of layers:
-
-Presentation: UI and ViewModels.  
-Domain: Business logic and use cases.  
-Data: Data sources and repositories.
-
-
-🛠️ Tools and Techniques
-The following table lists the tech stack powering CareerLinkApp, with a brief description and official documentation links for each tool:
-
-
-
-Tool/Technology
-Description
-Documentation
-
-
-
-🔧 Kotlin
-Modern Android programming language with concise syntax and null-safety.
-Kotlin Docs
-
-
-🎨 Jetpack Compose
-Android’s toolkit for building declarative, reactive UI.
-Compose Docs
-
-
-🧱 Clean Architecture
-Organizes code into layers for scalability and testability.
-Android Architecture
-
-
-🧩 Modularization
-Splits the app into UI, Data, and Domain modules for reduced complexity.
-Modularization Guide
-
-
-📊 MVVM
-Separates UI from business logic for cleaner, testable code.
-MVVM Guide
-
-
-📚 Repository Pattern
-Abstracts data sources into a single interface for seamless access.
-Repository Pattern
-
-
-💉 Hilt
-Simplifies dependency injection for ViewModels and Repositories.
-Hilt Docs
-
-
-💾 Room Database
-Caches job listings locally for offline access.
-Room Docs
-
-
-🗄️ DataStore
-Stores user preferences like theme and language settings.
-DataStore Docs
-
-
-🔐 Firebase Authentication
-Handles secure user sign-up/login with Email and Google.
-Firebase Auth Docs
-
-
-☁️ Firebase Firestore
-Stores user profiles in a scalable cloud database.
-Firestore Docs
-
-
-🌐 Retrofit
-Fetches job listings with type-safe HTTP requests.
-Retrofit Docs
-
-
-🚀 OkHttp
-Enhances networking performance for reliable API calls.
-OkHttp Docs
-
-
-⏳ Kotlin Coroutines
-Simplifies async tasks like API calls and database operations.
-Coroutines Docs
-
-
-🌊 Flow
-Delivers real-time data updates from APIs or databases.
-Flow Docs
-
-
-📈 StateFlow
-Manages UI state changes, syncing ViewModels with UI.
-StateFlow Docs
-
-
-🗺️ Navigation Component
-Handles smooth navigation between app screens.
-Navigation Docs
-
-
-🖼️ Coil
-Loads images (e.g., job/user photos) efficiently.
-Coil Docs
-
-
-📜 Timber
-Enhances debugging with clear, organized logs.
-Timber Docs
-
-
-🎉 SplashScreen API
-Creates a modern splash screen for a polished launch.
-SplashScreen Docs
-
-
-
-🛠️ Installation
-Get CareerLinkApp running locally with these straightforward steps:
-📋 Prerequisites
-
-Android Studio: Latest version (e.g., Koala or later).  
-Android SDK: API 33 or higher.  
-Firebase Project: Enable Authentication and Firestore.  
-Internet Connection: For initial setup and API access.
-
-🚀 Steps
-
-Clone the Repository:
+# 🚀 CareerLinkApp
+### Your Smart Android Job Finder App
+
+CareerLinkApp is your all-in-one job search companion! 🚀 Whether you're hunting for your first job or your next big opportunity, this modern Android app makes it seamless to discover, save, and apply to jobs with an elegant UI and robust features like offline support, push notifications, and more!
+
+---
+
+## 📂 Table of Contents
+- [🔍 Features Overview](#-features-overview)
+  - [🔐 Authentication](#-authentication)
+  - [💼 Job Listings](#-job-listings)
+  - [📄 Job Applications](#-job-applications)
+  - [🌟 UX Enhancements](#-ux-enhancements)
+- [🎥 Demo Video](#-demo-video)
+- [🏗️ Architecture](#-architecture)
+- [⚙️ Tech Stack](#-tech-stack)
+- [✨ Installation Guide](#-installation-guide)
+- [📱 How to Use](#-how-to-use)
+
+---
+
+## 🔍 Features Overview
+
+### 🔐 Authentication
+- **Secure Login & Sign-Up** via [Firebase Authentication](https://firebase.google.com/products/auth).
+- **Google Sign-In** support.
+- **User Profiles** stored in [Firebase Firestore](https://firebase.google.com/products/firestore).
+
+### 💼 Job Listings
+- **Live Job Feed** from [Remotive Jobs API](https://remotive.com/api-documentation).
+- **Offline Access** using [Room Database](https://developer.android.com/training/data-storage/room).
+- **Favorites** support for saved jobs.
+
+### 📄 Job Applications
+- **One-tap Apply** system.
+- **Push Notifications** using [Firebase Cloud Messaging](https://firebase.google.com/products/cloud-messaging).
+
+### 🌟 UX Enhancements
+- **Splash Screen & Onboarding Flow**.
+- **Dark/Light Mode** with [DataStore Preferences](https://developer.android.com/topic/libraries/architecture/datastore).
+- **Multilingual Support** (English 🇬🇧 / Arabic 🇦🇪).
+
+---
+
+## 🎥 Demo Video
+
+[![CareerLinkApp Demo](https://img.youtube.com/vi/your-video-id/0.jpg)](https://www.youtube.com/watch?v=your-video-id)
+
+---
+
+## 🏗️ Architecture
+
+CareerLinkApp is architected with:
+- **Clean Architecture** (Presentation, Domain, Data Layers)
+- **MVVM Pattern**
+- **Repository Pattern**
+
+### Clean Architecture Diagram
+![Clean Architecture](https://raw.githubusercontent.com/ahmedkhalifa14/CareerLinkApp/main/assets/clean_arch.png)
+
+### Multi-Module Design
+- **App Module**: Jetpack Compose UI + ViewModels
+- **Domain Module**: Business Logic + UseCases
+- **Data Module**: API, Firebase, Room, DataStore Repositories
+
+---
+
+## ⚙️ Tech Stack
+| Tool | Description |
+|------|-------------|
+| [Kotlin](https://kotlinlang.org/) | Main language for development |
+| [Jetpack Compose](https://developer.android.com/jetpack/compose) | Declarative UI toolkit |
+| [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) | Dependency Injection |
+| [Room](https://developer.android.com/training/data-storage/room) | Local database |
+| [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) | Key-Value preferences storage |
+| [Retrofit](https://square.github.io/retrofit/) | API client |
+| [OkHttp](https://square.github.io/okhttp/) | Networking layer |
+| [Firebase Auth](https://firebase.google.com/products/auth) | User authentication |
+| [Firebase Firestore](https://firebase.google.com/products/firestore) | User profile cloud database |
+| [FCM](https://firebase.google.com/products/cloud-messaging) | Notifications |
+| [Coil](https://coil-kt.github.io/coil/) | Image loading |
+| [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) | Async tasks |
+| [Flow](https://developer.android.com/kotlin/flow) / [StateFlow](https://developer.android.com/kotlin/flow/stateflow-and-sharedflow) | Reactive state updates |
+| [Navigation Compose](https://developer.android.com/jetpack/compose/navigation) | Navigation framework |
+| [ConstraintLayout Compose](https://developer.android.com/jetpack/compose/layouts/constraintlayout) | UI layout tool |
+
+---
+
+## ✨ Installation Guide
+
+### Prerequisites
+- Android Studio Giraffe or newer
+- Android SDK 33+
+- Firebase Project with Auth + Firestore enabled
+
+### Steps
+```bash
 git clone https://github.com/ahmedkhalifa14/CareerLinkApp.git
+```
+- Open the project in Android Studio
+- Add `google-services.json` to `app/`
+- Sync Gradle + Resolve dependencies
+- Run the app on an emulator or real device
 
+---
 
-Open in Android Studio:
+## 📱 How to Use
 
-Go to File > Open and select the CareerLinkApp folder.
+1. **Launch**: Splash screen + onboarding
+2. **Sign In**: Email or Google
+3. **Profile Setup**: Name, photo, and address
+4. **Browse**: Search and explore job listings
+5. **Save or Apply**: One-click favorite/apply
+6. **Settings**: Switch theme and language
 
+---
 
-Set Up Firebase:
+Find your dream job, anytime, anywhere — with **CareerLinkApp**! 🚀
 
-Create a Firebase project at Firebase Console.  
-Add an Android app and download google-services.json.  
-Place google-services.json in the app/ directory.
-
-
-Configure API Keys (if needed):
-
-Add any required API keys for job listings to local.properties.
-
-
-Sync and Build:
-
-Click Sync Project with Gradle Files to download dependencies.  
-Resolve any issues if prompted.
-
-
-Run the App:
-
-Connect a device or start an emulator.  
-Hit Run to build and launch the app.
-
-
-
-
-📱 Usage
-Dive into CareerLinkApp with these simple steps:
-
-Launch the App 🚀Start with a vibrant Splash Screen, followed by an Onboarding Flow for new users.
-
-Sign Up or Log In 🔐Create an account or sign in with Email/Password or Google using Firebase Authentication.
-
-Build Your Profile 📋Add your name, photo, and address, saved to Firebase Firestore.
-
-Browse Jobs 🔎Explore job listings from the API, cached in Room for offline access. Save favorites to local storage.
-
-Apply for Jobs 📝Submit applications and receive instant push notifications.
-
-Customize Your Experience 🌟Toggle Dark/Light Mode or switch between English/Arabic in settings.
-
-
-
-🤝 Contributing
-Love CareerLinkApp? Help make it better! Here’s how to contribute:
-
-Fork the repository.
-Create a branch:git checkout -b feature/your-feature
-
-
-Commit your changes:git commit -m 'Add some feature'
-
-
-Push to the branch:git push origin feature/your-feature
-
-
-Open a Pull Request with a clear description.
-
-
-Note: Follow the project’s coding standards and include tests for your changes.
-
-
-📜 License
-This project is licensed under the MIT License - see the LICENSE file for details.
