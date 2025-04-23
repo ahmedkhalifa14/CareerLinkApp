@@ -73,7 +73,7 @@ Clean, modular, and scalable using:
 | Hilt              | Dependency Injection             | [Docs](https://dagger.dev/hilt) |
 | Room              | Offline database                 | [Docs](https://developer.android.com/jetpack/androidx/releases/room) |
 | Firebase          | Auth, Firestore,                 | [Docs](https://firebase.google.com/docs) |
-| Retrofit + OkHttp |                                  | [Docs](https://square.github.io/retrofit/) |
+| Retrofit + OkHttp |A type-safe HTTP client for Android and Java  | [Docs](https://square.github.io/retrofit/) |
 | DataStore         | Preference storage               | [Docs](https://developer.android.com/topic/libraries/architecture/datastore) |
 | Coil              | Image loading                    | [Docs](https://coil-kt.github.io/coil/) |
 | Navigation Compose| In-app navigation                | [Docs](https://developer.android.com/jetpack/compose/navigation) |
