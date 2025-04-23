@@ -18,33 +18,36 @@ Find your dream job, anytime, anywhere! 🌟
 
 
 # 🔍 Main Features
-## 🔐 Authentication
+### 🔐 Authentication
 
-### Secure Sign-Up/Login: 
+#### Secure Sign-Up/Login: 
 Powered by Firebase Authentication with Email/Password and Google Sign-In options.
 User Profiles: Save personal details like name, photo, and address to Firebase Firestore for a tailored experience.
 
 ### 💼 Job Listings
 
-Dynamic Job Search: Fetch job listings from a remote API when online.
+#### Dynamic Job Search: Fetch job listings from a remote API when online.
 Offline Access: Cache jobs locally using Room Database for seamless browsing without internet.
 Favorites: Save jobs to local storage for quick access anytime.
 
 ### 📝 Job Applications
 
-### Apply with Ease:Submit job applications directly in the app.
+#### Apply with Ease:Submit job applications directly in the app.
 Instant Notifications: Get push notifications confirming your application submission.
 
 ### 🌟 User Experience
 
-## Splash Screen: 
+#### Splash Screen: 
 A branded, welcoming intro to the app.
-Onboarding Flow: Guides new users through the app’s features.
-Dark/Light Mode: Switch themes based on your preference or system settings.
-Multilingual Support: Choose between English and Arabic for a personalized experience.
+#### Onboarding Flow:
+Guides new users through the app’s features.
+##### Dark/Light Mode: 
+Switch themes based on your preference or system settings.
+#### Multilingual Support:
+Choose between English and Arabic for a personalized experience.
 
 
-🎥 Demo Video
+### 🎥 Demo Video
 Check out CareerLinkApp in action! The video below highlights the app’s slick UI and core features:
 [Insert Video Link Here]
 📌 How to Add the Video
@@ -62,97 +65,92 @@ Option 2: YouTube/VimeoUpload to YouTube or Vimeo and use the link or thumbnail:
 Pro Tip: Keep the video short (30-60 seconds) and showcase key features like job browsing, applying, and theme switching! 🎬
 
 
-🏗️ App Architecture
-CareerLinkApp is built with Clean Architecture, MVVM (Model-View-ViewModel), and Repository Pattern to ensure:
+### 🏗️ App Architecture
+#### CareerLinkApp is built with Clean Architecture, MVVM (Model-View-ViewModel), and Repository Pattern to ensure:
 
-Modularity: Easy to extend and maintain.
-Testability: Simplifies unit and UI testing.
-Separation of Concerns: Keeps UI, logic, and data layers independent.
+##### Modularity: Easy to extend and maintain.
+##### Testability: Simplifies unit and UI testing.
+##### Separation of Concerns: Keeps UI, logic, and data layers independent.
 
-🧩 Multi-Module Structure
+### 🧩 Multi-Module Structure
 The app is split into three modules for maximum flexibility:
-1. UI Module (App Module)
+##### 1. UI Module (App Module)
 
-Powers the Jetpack Compose UI and ViewModels.
+### Powers the Jetpack Compose UI and ViewModels.
 Handles user interactions and displays data.
 
-2. Data Module
+##### 2. Data Module
 
 Manages data sources (API, Room, DataStore, Firebase).
 Provides repositories to abstract data access.
 
-3. Domain Module
+##### 3. Domain Module
 
 Contains business logic and use cases.
 Ensures reusability and isolates complex logic.
 
 
-🛠️ Tools and Techniques
+### 🛠️ Tools and Techniques
 Here’s the tech stack powering CareerLinkApp, with a quick rundown of each tool’s role:
 
-🔧 KotlinThe go-to language for Android, with concise syntax and null-safety for robust code.
+##### 🔧 KotlinThe go-to language for Android, with concise syntax and null-safety for robust code.
 
-🎨 Jetpack ComposeModern UI toolkit for building fast, reactive, and beautiful interfaces.
+##### 🎨 Jetpack ComposeModern UI toolkit for building fast, reactive, and beautiful interfaces.
 
-🧱 Clean ArchitectureOrganizes code into layers (Presentation, Domain, Data) for scalability and testing.
+##### 🧱 Clean ArchitectureOrganizes code into layers (Presentation, Domain, Data) for scalability and testing.
 
-🧩 ModularizationSplits the app into UI, Data, and Domain modules to reduce complexity.
+##### 🧩 ModularizationSplits the app into UI, Data, and Domain modules to reduce complexity.
 
-📊 MVVMSeparates UI (View) from logic (ViewModel) for cleaner, testable code.
+##### 📊 MVVMSeparates UI (View) from logic (ViewModel) for cleaner, testable code.
 
-📚 Repository PatternAbstracts data sources into a single interface for seamless data access.
+##### 📚 Repository PatternAbstracts data sources into a single interface for seamless data access.
 
-💉 Hilt dependency injection, providing ViewModels and Repositories effortlessly.
+##### 💉 Hilt dependency injection, providing ViewModels and Repositories effortlessly.
 
-💾 Room DatabaseCaches job listings locally for offline access.
+##### 💾 Room DatabaseCaches job listings locally for offline access.
 
-🗄️ DataStoreStores user preferences like theme and language settings.
+##### 🗄️ DataStoreStores user preferences like theme and language settings.
 
-🔐 Firebase AuthenticationHandles secure user sign-up and login with Email and Google.
+##### 🔐 Firebase AuthenticationHandles secure user sign-up and login with Email and Google.
 
-☁️ Firebase FirestoreStores user profiles in a scalable cloud database.
+##### ☁️ Firebase FirestoreStores user profiles in a scalable cloud database.
 
-🌐 RetrofitFetches job listings from APIs with type-safe HTTP requests.
+##### 🌐 RetrofitFetches job listings from APIs with type-safe HTTP requests.
 
-🚀 OkHttpBoosts networking performance for reliable API calls.
+##### 🚀 OkHttpBoosts networking performance for reliable API calls.
 
-⏳ Kotlin CoroutinesSimplifies async tasks like API calls and database operations.
+##### ⏳ Kotlin CoroutinesSimplifies async tasks like API calls and database operations.
 
-🌊 FlowDelivers real-time data updates from APIs or databases.
+##### 🌊 FlowDelivers real-time data updates from APIs or databases.
 
-📈 StateFlowManages UI state changes, syncing ViewModels with the UI.
+##### 📈 StateFlowManages UI state changes, syncing ViewModels with the UI.
 
-🗺️ Navigation ComponentHandles smooth navigation between app screens.
+##### 🗺️ Navigation ComponentHandles smooth navigation between app screens.
 
-🖼️ CoilLoads images (e.g., job or user photos) quickly and efficiently.
-
-📜 TimberEnhances debugging with clear, organized logs.
-
-🎉 SplashScreen APICreates a modern, customizable splash screen for a polished launch.
+##### 🖼️ Coil images (e.g., job or user photos) quickly and efficiently.
 
 
-
-🛠️ Installation
+### 🛠️ Installation
 Get CareerLinkApp up and running on your machine with these steps:
-📋 Prerequisites
+##### 📋 Prerequisites
 
-Android Studio: Latest version (e.g., Koala or later).
-Android SDK: API 33 or higher.
-Firebase Project: Enable Authentication and Firestore.
-Internet: Required for initial setup and API access.
+##### Android Studio: Latest version (e.g., Koala or later).
+##### Android SDK: API 33 or higher.
+##### Firebase Project: Enable Authentication and Firestore.
+##### Internet: Required for initial setup and API access.
 
-🚀 Steps
+##### 🚀 Steps
 
-Clone the Repository:
+##### Clone the Repository:
 git clone https://github.com/ahmedkhalifa14/CareerLinkApp.git
 
 
-Open in Android Studio:
+##### Open in Android Studio:
 
-Go to File > Open and select the CareerLinkApp folder.
+##### Go to File > Open and select the CareerLinkApp folder.
 
 
-Set Up Firebase:
+##### Set Up Firebase:
 
 Create a Firebase project at Firebase Console.
 Add an Android app and download google-services.json.
@@ -170,7 +168,7 @@ Click Sync Project with Gradle Files to download dependencies.
 Resolve any issues if prompted.
 
 
-Run the App:
+##### Run the App:
 
 Connect a device or start an emulator.
 Hit Run to build and launch the app.
@@ -178,36 +176,36 @@ Hit Run to build and launch the app.
 
 
 
-📱 Usage
+### 📱 Usage
 Here’s how to dive into CareerLinkApp:
 
-Launch the App:
+##### Launch the App:
 
 Start with a vibrant Splash Screen, followed by an Onboarding Flow for new users.
 
 
-Sign Up or Log In:
+##### Sign Up or Log In:
 
 Create an account or sign in with Email/Password or Google using Firebase Authentication.
 
 
-Build Your Profile:
+##### Build Your Profile:
 
 Add your name, photo, and address, saved to Firebase Firestore.
 
 
-Browse Jobs:
+##### Browse Jobs:
 
 Explore job listings from the API, cached in Room for offline access.
 Save your favorite jobs to local storage.
 
 
-Apply for Jobs:
+##### Apply for Jobs:
 
 Submit applications and get instant push notifications.
 
 
-Customize Your Experience:
+##### Customize Your Experience:
 
 Toggle Dark/Light Mode or switch between English/Arabic in settings.
 
